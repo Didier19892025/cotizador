@@ -4,7 +4,7 @@ import { EmployeeCreateZod, EmployeeCreateZodType } from '@/schemas/zod.employee
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { AtSign, CopyCheck, Fingerprint, PersonStanding, User } from 'lucide-react'
+import { AtSign, Brain, CircleDollarSign, Coins, CopyCheck, Fingerprint, LandPlot, MapPinHouse, PersonStanding, RectangleEllipsis, User } from 'lucide-react'
 import { useForm } from 'react-hook-form';
 
 
@@ -162,7 +162,7 @@ export default function FormCreateEmployee() {
                                 <label className='block mb-1'>Area</label>
                                 <div className="flex items-center">
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
-                                        <AtSign size={18} color='blue' />
+                                        <LandPlot size={18} color='blue'/>
                                         <input
                                             {...register("area")}
                                             className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
@@ -175,7 +175,7 @@ export default function FormCreateEmployee() {
                                 <label className='block mb-1'>Cost Center</label>
                                 <div className="flex items-center">
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
-                                        <Fingerprint size={18} color='blue' />
+                                        <MapPinHouse size={18} color='blue' />
                                         <input
                                             {...register("costCenter")}
                                             className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
@@ -188,7 +188,7 @@ export default function FormCreateEmployee() {
                                 <label className='block mb-1'>CPh Code</label>
                                 <div className="flex items-center">
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
-                                        <Fingerprint size={18} color='blue' />
+                                        <Brain size={18} color='blue'/>
                                         <input
                                             {...register("cphCode")}
                                             className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
@@ -201,7 +201,7 @@ export default function FormCreateEmployee() {
                                 <label className='block mb-1'>CPh </label>
                                 <div className="flex items-center">
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
-                                        <Fingerprint size={18} color='blue' />
+                                        <CircleDollarSign size={18} color='blue'/>
                                         <input
                                             {...register("cph")}
                                             type='number' className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
@@ -235,7 +235,7 @@ export default function FormCreateEmployee() {
                                 <label className='block mb-1'>Type Currency </label>
                                 <div className="flex items-center">
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
-                                        <Fingerprint size={18} color='blue' />
+                                        <Coins size={18} color='blue'/>
                                         <input
                                             {...register("typeCurrency")}
                                             className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
@@ -270,7 +270,7 @@ export default function FormCreateEmployee() {
                                 <label className='block mb-1'>Password</label>
                                 <div className="flex items-center">
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
-                                        <AtSign size={18} color='blue' />
+                                        <RectangleEllipsis size={18} color='blue' />
                                         <input
                                             {...register("password")}
                                             type='password' className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
