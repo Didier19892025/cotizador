@@ -7,7 +7,7 @@ CREATE TABLE `Roles` (
     `cc` VARCHAR(191) NOT NULL,
     `cphCode` VARCHAR(191) NOT NULL,
     `cph` DOUBLE NOT NULL,
-    `currency` VARCHAR(191) NOT NULL,
+    `currency` ENUM('USD', 'COP', 'PEN', 'CLP', 'MXN', 'ARS', 'UYU', 'PAB', 'BRL', 'EUR', 'GTQ', 'HNL', 'NIO', 'XDC', 'VEF') NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

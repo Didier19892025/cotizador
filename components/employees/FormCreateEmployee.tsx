@@ -3,7 +3,8 @@
 import { EmployeeCreateZod, EmployeeCreateZodType } from '@/schemas/zod.employees'
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Country } from '@prisma/client';
+import { countries } from '@/data/countries';
+import { currencies } from '@/data/currencies';
 
 
 import { AtSign, Brain, CircleDollarSign, Coins, CopyCheck, Fingerprint, LandPlot, MapPinHouse, PersonStanding, RectangleEllipsis, User } from 'lucide-react'
@@ -146,7 +147,7 @@ export default function FormCreateEmployee() {
                                 <label className='block mb-1'>Area</label>
                                 <div className="flex items-center">
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
-                                        <LandPlot size={18} color='blue'/>
+                                        <LandPlot size={18} color='blue' />
                                         <input
                                             {...register("area")}
                                             className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
@@ -172,7 +173,7 @@ export default function FormCreateEmployee() {
                                 <label className='block mb-1'>CPh Code</label>
                                 <div className="flex items-center">
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
-                                        <Brain size={18} color='blue'/>
+                                        <Brain size={18} color='blue' />
                                         <input
                                             {...register("cphCode")}
                                             className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
@@ -185,7 +186,7 @@ export default function FormCreateEmployee() {
                                 <label className='block mb-1'>CPh </label>
                                 <div className="flex items-center">
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
-                                        <CircleDollarSign size={18} color='blue'/>
+                                        <CircleDollarSign size={18} color='blue' />
                                         <input
                                             {...register("cph")}
                                             type='number' className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
@@ -203,8 +204,8 @@ export default function FormCreateEmployee() {
                                             {...register("country")}
                                             className='w-full px-4 py-2 border-none focus:outline-none bg-transparent'>
                                             <option value="">Select a Country</option>
-                                            {Object.values(Country).map((country) => (
-                                                <option key={country} value={country}>
+                                            {countries.map((country, index) => (
+                                                <option key={index} value={country}>
                                                     {country}
                                                 </option>
                                             ))}
@@ -219,14 +220,14 @@ export default function FormCreateEmployee() {
                                 <label className='block mb-1'>Type Currency </label>
                                 <div className="flex items-center">
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
-                                        <Coins size={18} color='blue'/>
-                                        <select 
+                                        <Coins size={18} color='blue' />
+                                        <select
                                             {...register("typeCurrency")}
                                             className='w-full px-4 py-2 border-none focus:outline-none bg-transparent'>
                                             <option value="">Select a TypeCurrency</option>
-                                            {Object.values(CurrencyType).map((typeCurrency) => (
-                                                 <option key={typeCurrency} value={typeCurrency}>
-                                                    {typeCurrency}
+                                            {currencies.map((currency, index) => (
+                                                <option key={index} value={currency}>
+                                                    {currency}
                                                 </option>
                                             ))}
                                         </select>
@@ -285,8 +286,8 @@ export default function FormCreateEmployee() {
 
                                     </div>
                                 </div>
-                                    {errors.role && (
-                                        <p className='text-red-500 text-xs'>{errors.role.message}</p>)}
+                                {errors.role && (
+                                    <p className='text-red-500 text-xs'>{errors.role.message}</p>)}
                             </div>
                         </div>
                     </section>

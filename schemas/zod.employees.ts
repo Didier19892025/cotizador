@@ -1,27 +1,6 @@
-//import { CurrencyEnum } from '@prisma/client';
+import { Country } from '@prisma/client';
+import { CurrencyType } from '@prisma/client';
 import { z } from 'zod';
-
-import { Currenc}
-// Definimos el esquema de validación para los paises
-const countryEnum = z.enum([
-  "Colombia",
-  "Peru",
-  "Chile",
-  "Mexico",
-  "Argentina",
-  "Uruguay",
-  "Panama",
-  "United_States",
-  "Bolivia",
-  "Brasil",
-  "Ecuador",
-  "Guatemala",
-  "Honduras",
-  "Nicaragua",
-  "Puerto_Rico",
-  "Saint_Lucia",
-  "Venezuela",
-]);
 
 
 
@@ -57,9 +36,9 @@ export const EmployeeCreateZod = z.object({
   // datos del rol
   jobRole: z.string().min(1, "Job Role is required"),
 
-  country: countryEnum,
+  country: z.nativeEnum(Country),
 
-
+  typeCurrency: z.nativeEnum(CurrencyType),
 
   area: z.string().min(1, "Area is required"),
 
@@ -87,7 +66,7 @@ export const EmployeeCreateZod = z.object({
     .optional(),  // Hacemos el campo opcional
 
   role: z
-    .enum(["USER", "ADMIN"])
+    .enum(["admin", "user"])
     .optional(),  // Hacemos el campo opcional
 });
 
