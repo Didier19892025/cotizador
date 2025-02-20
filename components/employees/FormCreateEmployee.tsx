@@ -5,16 +5,23 @@ import { EmployeeCreateZod, EmployeeCreateZodType } from '@/schemas/zod.employee
 import { zodResolver } from "@hookform/resolvers/zod";
 import { countries } from '@/data/countries';
 import { currencies } from '@/data/currencies';
+import { useRouter } from 'next/navigation';
 
 
 import { AtSign, Brain, CircleDollarSign, Coins, CopyCheck, Fingerprint, LandPlot, MapPinHouse, PersonStanding, RectangleEllipsis, User } from 'lucide-react'
 import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { createEmployee } from '@/server/employees';
+import Swal from 'sweetalert2';
 
 
 
 
 
 export default function FormCreateEmployee() {
+
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const router = useRouter()
 
     const {
         register,
@@ -23,11 +30,44 @@ export default function FormCreateEmployee() {
         reset,
     } = useForm<EmployeeCreateZodType>({
         resolver: zodResolver(EmployeeCreateZod),
-        mode: "onChange",
+        mode: "onSubmit",
     });
-    const onSubmit = (data: EmployeeCreateZodType) => {
-        console.log('data listos para enviar al server', data)
+
+
+    const onSubmit = async(data: EmployeeCreateZodType) => {
+        setIsSubmitting(true)
+       try {
+
+        const result = await createEmployee(data)
+        if(!result?.success){
+            Swal.fire({
+                title: 'Error',
+                text: result?.message,
+                icon: 'error',
+                confirmButtonText: 'Okay',
+            })
+            return
+        }
+        Swal.fire({
+            title: 'Success',
+            text: 'Employee created successfully',
+            icon:'success',
+            confirmButtonText: 'Okay',
+        })
+        router.push('/employees')
         reset()
+       } catch (error) {
+           console.log(error)
+           Swal.fire({
+            title: 'Error',
+            text: 'An error occurred while creating the employee',
+            icon: 'error',
+            confirmButtonText: 'Okay',
+           })
+        
+       }finally{
+        setIsSubmitting(false)
+       }
     }
 
 
@@ -277,7 +317,7 @@ export default function FormCreateEmployee() {
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
                                         <CopyCheck size={18} color='blue' />
                                         <select
-                                            {...register("role")}
+                                            {...register("rol")}
                                             className='w-full px-4 py-2 border-none focus:outline-none bg-transparent'>
                                             <option value="">select a Role</option>
                                             <option value="admin">Admin</option>
@@ -286,15 +326,17 @@ export default function FormCreateEmployee() {
 
                                     </div>
                                 </div>
-                                {errors.role && (
-                                    <p className='text-red-500 text-xs'>{errors.role.message}</p>)}
+                                {errors.rol && (
+                                    <p className='text-red-500 text-xs'>{errors.rol.message}</p>)}
                             </div>
                         </div>
                     </section>
 
                     {/*boton para insertar el empleado*/}
                     <div className='flex justify-end'>
-                        <button type='submit' className='px-4 py-2 bg-blue-400 text-white font-medium rounded-lg'>Insert Employee</button>
+                        <button type='submit' className='px-4 py-2 bg-blue-400 text-white font-medium rounded-lg'>
+                          {isSubmitting ? 'Loading...' : 'Create Employee'}
+                            </button>
                     </div>
                 </form>
             </div>

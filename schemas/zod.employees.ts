@@ -51,23 +51,26 @@ export const EmployeeCreateZod = z.object({
     .transform((val) => parseFloat(val))
     .refine((val) => val > 0, { message: "Invalid" }),
 
-    //typeCurrency: z.enum(["USD", "COP", "PEN", "CLP", "MXN", "ARS", "UYU", "PAB", "BRL", "EUR", "GTQ", "HNL", "NIO", "XCD", "VEF"]),
 
     userName: z
     .string()
     .min(1, "Username is required")
     .max(50, "Username is too long")
     .regex(/^[a-zA-Z0-9_]+$/, "Username must be alphanumeric or underscore")
-    .optional(),  // Hacemos el campo opcional
+    .nullable()
+    .optional(),  // El campo username es opcional
 
   password: z
     .string()
     .min(6, "Password must be at least 6 characters")
-    .optional(),  // Hacemos el campo opcional
+    .nullable()
+    .optional(),  // El campo password es opcional
 
-  role: z
+    rol: z
     .enum(["admin", "user"])
-    .optional(),  // Hacemos el campo opcional
+    .nullable()
+    .optional(),  // El campo role es opcional
+
 });
 
 export type EmployeeCreateZodType = z.infer<typeof EmployeeCreateZod>;

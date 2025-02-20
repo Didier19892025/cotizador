@@ -33,7 +33,7 @@ model Users {
   userName String    @unique
   password String
   rol      UserRole
-  Employee Employee?
+  Employee Employee? @relation
 }
 
 model Employee {
