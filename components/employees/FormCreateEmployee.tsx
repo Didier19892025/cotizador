@@ -3,31 +3,15 @@
 import { EmployeeCreateZod, EmployeeCreateZodType } from '@/schemas/zod.employees'
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Country } from '@prisma/client';
+
 
 import { AtSign, Brain, CircleDollarSign, Coins, CopyCheck, Fingerprint, LandPlot, MapPinHouse, PersonStanding, RectangleEllipsis, User } from 'lucide-react'
 import { useForm } from 'react-hook-form';
 
 
 
-enum Country {
-    Colombia = "Colombia",
-    Peru = "Peru",
-    Chile = "Chile",
-    Mexico = "Mexico",
-    Argentina = "Argentina",
-    Uruguay = "Uruguay",
-    Panama = "Panama",
-    United_States = "United States",
-    Bolivia = "Bolivia",
-    Brasil = "Brasil",
-    Ecuador = "Ecuador",
-    Guatemala = "Guatemala",
-    Honduras = "Honduras",
-    Nicaragua = "Nicaragua",
-    Puerto_Rico = "Puerto Rico",
-    Saint_Lucia = "Saint Lucia",
-    Venezuela = "Venezuela",
-}
+
 
 export default function FormCreateEmployee() {
 
@@ -236,9 +220,16 @@ export default function FormCreateEmployee() {
                                 <div className="flex items-center">
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
                                         <Coins size={18} color='blue'/>
-                                        <input
+                                        <select 
                                             {...register("typeCurrency")}
-                                            className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
+                                            className='w-full px-4 py-2 border-none focus:outline-none bg-transparent'>
+                                            <option value="">Select a TypeCurrency</option>
+                                            {Object.values(CurrencyType).map((typeCurrency) => (
+                                                 <option key={typeCurrency} value={typeCurrency}>
+                                                    {typeCurrency}
+                                                </option>
+                                            ))}
+                                        </select>
                                     </div>
                                 </div>
                                 {errors.typeCurrency && (

@@ -15,7 +15,7 @@ model Roles {
   cc                   String
   cphCode              String
   cph                  Float
-  currency             String
+  currency             CurrencyType
   CompensationCurrency CompensationCurrency?
   Employee             Employee?
 }
@@ -110,4 +110,22 @@ enum Country {
 enum UserRole {
   admin
   user
+}
+
+enum CurrencyType {
+  USD
+  COP
+  PEN
+  CLP
+  MXN
+  ARS
+  UYU
+  PAB
+  BRL
+  EUR
+  GTQ
+  HNL
+  NIO
+  XDC
+  VEF
 }

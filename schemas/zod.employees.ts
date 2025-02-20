@@ -1,5 +1,7 @@
+//import { CurrencyEnum } from '@prisma/client';
 import { z } from 'zod';
 
+import { Currenc}
 // Definimos el esquema de validación para los paises
 const countryEnum = z.enum([
   "Colombia",
@@ -20,6 +22,8 @@ const countryEnum = z.enum([
   "Saint_Lucia",
   "Venezuela",
 ]);
+
+
 
 export const EmployeeCreateZod = z.object({
   // datos basicos
@@ -55,6 +59,8 @@ export const EmployeeCreateZod = z.object({
 
   country: countryEnum,
 
+
+
   area: z.string().min(1, "Area is required"),
 
   costCenter: z.string().min(1, "Cost Center is required"),
@@ -66,7 +72,7 @@ export const EmployeeCreateZod = z.object({
     .transform((val) => parseFloat(val))
     .refine((val) => val > 0, { message: "Invalid" }),
 
-    typeCurrency: z.enum(["USD", "COP", "PEN", "CLP", "MXN", "ARS", "UYU", "PAB", "BRL", "EUR", "GTQ", "HNL", "NIO", "USD", "XCD", "VEF"]),
+    //typeCurrency: z.enum(["USD", "COP", "PEN", "CLP", "MXN", "ARS", "UYU", "PAB", "BRL", "EUR", "GTQ", "HNL", "NIO", "XCD", "VEF"]),
 
     userName: z
     .string()

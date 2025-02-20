@@ -1,5 +1,6 @@
 import { Country } from '@prisma/client'
 
+
 export interface EmployeesType {
     id: number;
     fullName: string;
