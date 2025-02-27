@@ -3,6 +3,7 @@
 import { deleteEmployee } from "@/server/employees";
 import { EmployeesType } from "@/types/employees.type";
 import { Pencil, Trash2 } from "lucide-react";
+import Link from "next/link";
 import Swal from "sweetalert2";
 
 interface ListEmployeesProps {
@@ -49,7 +50,7 @@ export default function ListEmployees({ employees }: ListEmployeesProps) {
                     <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
                         <thead className="bg-gray-100">
                             <tr>
-                                <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Id</th>
+                                <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700"><strong>#</strong></th>
                                 <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Full Name</th>
                                 <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Email</th>
                                 <th className="px-4 py-2 text-left text-sm font-semibold text-gray-700">Status</th>
@@ -82,9 +83,11 @@ export default function ListEmployees({ employees }: ListEmployeesProps) {
                                     <td className="px-4 py-2 text-sm text-gray-700">{emp.role.country}</td>
                                     <td className="px-4 py-2 flex space-x-2 items-center">
                                         {/* Actions for each employee */}
-                                        <button className="text-blue-500 hover:text-blue-700">
+                                        <Link
+                                            href={`/employees/${emp.id}/edit`}
+                                         className="text-blue-500 hover:text-blue-700">
                                             <Pencil size={18} />
-                                        </button>
+                                        </Link>
                                         <button 
                                         onClick={() => handleDeleteEmployee(emp.id)}
                                         className="text-red-500 hover:text-red-700">

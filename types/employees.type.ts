@@ -1,4 +1,4 @@
-import { Country } from '@prisma/client'
+import { Country, CurrencyType } from "@prisma/client";
 
 
 export interface EmployeesType {
@@ -8,6 +8,8 @@ export interface EmployeesType {
     status: boolean;
     latamId: string;
     typeEmployee: string;
+    userId: number | null;
+    roleId: number;
     role: {
         id: number;
         jobRole: string;
@@ -15,7 +17,7 @@ export interface EmployeesType {
         area: string;
         cc: string;
         cphCode: string;
-        cph: number;
-        currency: string;
+        cph: number | string;
+        currency: CurrencyType;
     }
 }

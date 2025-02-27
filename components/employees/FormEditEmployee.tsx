@@ -1,25 +1,23 @@
 "use client"
 
-import { EmployeeCreateZod, EmployeeCreateZodType } from '@/schemas/zod.employees'
-
+import { EmployeeUpdateZod, EmployeeUpdateZodType } from '@/schemas/zod.employees'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { countries } from '@/data/countries';
 import { currencies } from '@/data/currencies';
-import { useRouter } from 'next/navigation';
-
-
-import { AtSign, Brain, CircleDollarSign, Coins, CopyCheck, Fingerprint, LandPlot, MapPinHouse, PersonStanding, RectangleEllipsis, User } from 'lucide-react'
+// import { useRouter } from 'next/navigation';
+import { AtSign, Brain, CircleDollarSign, Coins, CopyCheck, Fingerprint, LandPlot, MapPinHouse, PersonStanding, User } from 'lucide-react'
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { createEmployee } from '@/server/employees';
+import { EmployeesType } from '@/types/employees.type';
+import { updateEmployee } from '@/server/employees';
 import Swal from 'sweetalert2';
+import { useRouter } from 'next/navigation';
+interface FormEditEmployeeProps {
+    employee: EmployeesType;
+}
 
-
-
-
-
-export default function FormCreateEmployee() {
-
+export default function FormEditEmployee({ employee }: FormEditEmployeeProps) {
+    console.log('empleado por id', employee.id);
 
     const [isSubmitting, setIsSubmitting] = useState(false)
     const router = useRouter()
@@ -28,53 +26,62 @@ export default function FormCreateEmployee() {
         register,
         handleSubmit,
         formState: { errors },
-        reset,
-    } = useForm<EmployeeCreateZodType>({
-        resolver: zodResolver(EmployeeCreateZod),
+    } = useForm<EmployeeUpdateZodType>({
+        resolver: zodResolver(EmployeeUpdateZod),
         mode: "onSubmit",
+        defaultValues: {
+            fullName: employee.fullName,
+            email: employee.email,
+            latamId: employee.latamId,
+            status: employee.status,
+            typeEmployee: employee.typeEmployee,
+            jobRole: employee.role.jobRole,
+            area: employee.role.area,
+            costCenter: employee.role.cc,
+            cphCode: employee.role.cphCode,
+            cph: typeof employee.role.cph === 'string' ? parseFloat(employee.role.cph) : employee.role.cph,
+            country: employee.role.country,
+            typeCurrency: employee.role.currency,
+        }
+
     });
 
-
-    const onSubmit = async(data: EmployeeCreateZodType) => {
+    const onSubmit = async (data: EmployeeUpdateZodType) => {
+        console.log('empleado enviado para editar', data)
         setIsSubmitting(true)
-       try {
+        try {
+            const result = await updateEmployee(employee.id, data)
 
-        const result = await createEmployee(data)
-        if(!result?.success){
+            if (!result.success) {
+                console.log('error', result.message)
+                Swal.fire({
+                    title: 'Error',
+                    text: result.message,
+                    icon: 'error',
+                    confirmButtonText: 'Okay',
+                })
+                return;
+            }
             Swal.fire({
-                title: 'Error',
-                text: result?.message,
-                icon: 'error',
+                title: 'Success',
+                text: result.message,
+                icon: 'success',
                 confirmButtonText: 'Okay',
             })
-            return
+            router.push('/employees')
+
+        } catch (error) {
+            console.log('error', error);
+        } finally {
+            setIsSubmitting(false);
         }
-        Swal.fire({
-            title: 'Success',
-            text: 'Employee created successfully',
-            icon:'success',
-            confirmButtonText: 'Okay',
-        })
-        router.push('/employees')
-        reset()
-       } catch (error) {
-           console.log(error)
-           Swal.fire({
-            title: 'Error',
-            text: 'An error occurred while creating the employee',
-            icon: 'error',
-            confirmButtonText: 'Okay',
-           })
-        
-       }finally{
-        setIsSubmitting(false)
-       }
     }
+
 
 
     return (
         <div className=' rounded-lg mt-4 p-4 overflow-auto max-h-[500px]'>
-            <h1 className='text-2xl font-semibold mb-4'>Fomr Create Employee</h1>
+            <h1 className='text-2xl font-semibold mb-4'>Fomr Edit Employee</h1>
             <div className=' '>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     {/*section de datos basicos*/}
@@ -118,8 +125,10 @@ export default function FormCreateEmployee() {
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
                                         <Fingerprint size={18} color='blue' />
                                         <input
-                                            {...register("latamId")}
-                                            type='number' className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
+                                            disabled
+                                            {...register("latamId", { valueAsNumber: true })}
+                                            type='text'
+                                            className=' cursor-no-drop disabled:opacity-50 w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
                                     </div>
                                 </div>
                                 {errors.latamId && (
@@ -217,6 +226,7 @@ export default function FormCreateEmployee() {
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
                                         <Brain size={18} color='blue' />
                                         <input
+                                            type='text'
                                             {...register("cphCode")}
                                             className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
                                     </div>
@@ -230,7 +240,7 @@ export default function FormCreateEmployee() {
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
                                         <CircleDollarSign size={18} color='blue' />
                                         <input
-                                            {...register("cph")}
+                                            {...register("cph", { valueAsNumber: true })}
                                             type='number' className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
                                     </div>
                                 </div>
@@ -282,63 +292,11 @@ export default function FormCreateEmployee() {
                         </div>
                     </section>
 
-                    {/*section de usuarios*/}
-
-                    <section className='p-4 border-b mb-4 bg-white shadow-md rounded-lg'>
-                        <h2 className='mb-4 font-medium'>Date Users</h2>
-                        <div className='grid grid-col-1 lg:grid-cols-3 gap-4'>
-                            <div>
-                                <label className='block mb-1'>User Name</label>
-                                <div className="flex items-center">
-                                    <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
-                                        <User size={18} color='blue' />
-                                        <input
-                                            {...register("userName")}
-                                            className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
-                                    </div>
-                                </div>
-                                {errors.userName && (
-                                    <p className='text-red-500 text-xs'>{errors.userName.message}</p>)}
-                            </div>
-                            <div>
-                                <label className='block mb-1'>Password</label>
-                                <div className="flex items-center">
-                                    <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
-                                        <RectangleEllipsis size={18} color='blue' />
-                                        <input
-                                            {...register("password")}
-                                            type='password' className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
-                                    </div>
-                                </div>
-                                {errors.password && (
-                                    <p className='text-red-500 text-xs'>{errors.password.message}</p>)}
-                            </div>
-                            <div>
-                                <label className='block mb-1'>Role</label>
-                                <div className="flex items-center">
-                                    <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
-                                        <CopyCheck size={18} color='blue' />
-                                        <select
-                                            {...register("rol")}
-                                            className='w-full px-4 py-2 border-none focus:outline-none bg-transparent'>
-                                            <option value="">select a Role</option>
-                                            <option value="admin">Admin</option>
-                                            <option value="user">User</option>
-                                        </select>
-
-                                    </div>
-                                </div>
-                                {errors.rol && (
-                                    <p className='text-red-500 text-xs'>{errors.rol.message}</p>)}
-                            </div>
-                        </div>
-                    </section>
-
                     {/*boton para insertar el empleado*/}
                     <div className='flex justify-end'>
                         <button type='submit' className='px-4 py-2 bg-blue-400 text-white font-medium rounded-lg'>
-                          {isSubmitting ? 'Loading...' : 'Create Employee'}
-                            </button>
+                            {isSubmitting ? 'Loading...' : 'Edit Employee'}
+                        </button>
                     </div>
                 </form>
             </div>

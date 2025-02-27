@@ -29,11 +29,11 @@ model CompensationCurrency {
 }
 
 model Users {
-  id       Int       @id @default(autoincrement())
-  userName String    @unique
-  password String
-  rol      UserRole
-  Employee Employee? @relation
+  id       Int      @id @default(autoincrement())
+  userName String?   @unique
+  password String?
+  rol      UserRole?
+  Employee Employee?
 }
 
 model Employee {
@@ -41,10 +41,10 @@ model Employee {
   fullName     String
   email        String  @unique
   status       Boolean
-  latamId      Int     @unique
+  latamId      String     @unique
   typeEmployee String
   roleId       Int     @unique
-  userId       Int?    @unique
+  userId       Int?  @unique
   role         Roles   @relation(fields: [roleId], references: [id])
   user         Users?  @relation(fields: [userId], references: [id])
 }
