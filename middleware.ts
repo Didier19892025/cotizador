@@ -29,5 +29,5 @@ export function middleware(request: NextRequest) {
 
 // Configurar qué rutas son manejadas por el middleware
 export const config = {
-  matcher: ['/admin/:path*', '/login', '/home', '/employees'],
+  matcher: ['/admin/:path*', '/login', '/home', '/employees', '/employees/new', '/new-proyect'],
 };

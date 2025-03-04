@@ -34,9 +34,9 @@ export const EmployeeCreateZod = z.object({
   // datos del rol
   jobRole: z.string().min(1, "Job Role is required"),
 
-  country: z.nativeEnum(Country),
+  country: z.nativeEnum(Country, { message: "Invalid country" }),
 
-  typeCurrency: z.nativeEnum(CurrencyType),
+  typeCurrency: z.nativeEnum(CurrencyType, { message: "Invalid currency" }),
 
   area: z.string().min(1, "Area is required"),
 
