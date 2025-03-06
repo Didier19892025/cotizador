@@ -55,7 +55,7 @@ export default function Header() {
     }
   };
   return (
-    <div className="w-full border-b shadow-sm bg-white flex items-center">
+    <div className="w-full  shadow-md bg-white flex items-center">
       <nav className="w-full flex justify-between items-center px-4 py-2">
         {/* Logo con imagen de la empresa */}
         <div className="flex items-center ">
@@ -76,7 +76,7 @@ export default function Header() {
         <div>
           <button
             onClick={handleLogout}
-            className="flex h-10 w-auto justify-center items-center gap-2 text-white bg-red-500 p-2 rounded-lg hover:bg-red-600 transition-all duration-300 ease-in-out"
+            className="flex w-auto justify-center items-center gap-2 text-white bg-indigo-300 py-2 px-6 rounded-2xl hover:bg-red-600 transition-all duration-300 ease-in-out"
           >
             Salir
             <LogOutIcon size={14} />

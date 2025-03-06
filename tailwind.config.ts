@@ -7,7 +7,15 @@ export default {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        indigo: '#4f46e5', // Color indigo principal
+        purple: '#f3e8ff', // Color purple principal
+        violet: '#7c3aed', // Color violet principal
+        gray: '#6b7280',   // Color gray principal
+        white: '#ffffff',  // Color blanco
+      },
+    },
   },
   plugins: [],
 } satisfies Config;

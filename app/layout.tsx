@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className=" bg-gray-200"
+        className=" min-h-screen bg-gradient-to-br from-indigo/30 to-purple "
       >
         {children}
       </body>
