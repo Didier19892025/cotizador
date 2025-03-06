@@ -67,12 +67,15 @@ export async function login(data: loginType) {
       maxAge: 8 * 60 * 60, // 8 horas en segundos
       sameSite: "lax", // Importante para que funcione con redirecciones
     });
-
+    
+    
     return {
       success: true,
       message: "User logged in",
       userFound,
     };
+    
+    
   } catch (error) {
     console.log(error);
     return {

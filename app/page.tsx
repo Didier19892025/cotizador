@@ -1,4 +1,4 @@
-import Login from "@/components/auth/Login";
+import Login from "@/actions/Login";
 
 
 export default async function Home() {
@@ -8,7 +8,6 @@ export default async function Home() {
   return (
     <>
     <Login />
-  
     </>
   );
 }

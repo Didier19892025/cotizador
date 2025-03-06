@@ -4,7 +4,7 @@ import { loginType, loginTypeZod } from "@/schemas/zodLogin";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {useRouter} from 'next/navigation'
-import { useState } from "react";
+// import { useState } from "react";
 import { login } from "@/server/login";
 import Swal from "sweetalert2";
 
@@ -12,19 +12,19 @@ import Swal from "sweetalert2";
 
 export default function Login() {
   const router = useRouter()
-  const [ isSubmitting, setIsSubmitting ] = useState(false)
+  // const [ isSubmitting, setIsSubmitting ] = useState(false)
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<loginType>({
     resolver: zodResolver(loginTypeZod),
     mode: "onChange",
   })
 
   const onSubmit = async (data: loginType) => {
-    setIsSubmitting(true);
+    // setIsSubmitting(true);
     try {
       const result = await login(data);
       if (!result.success) {
@@ -44,10 +44,9 @@ export default function Login() {
           icon: 'success',
           timer: 1500,
           showConfirmButton: false
-        }).then(() => {
+        })
           // Usamos replace en lugar de push para evitar que puedan volver al login con el botón atrás
-          router.push('/home');
-        });
+         router.push('/home');
       } else {
         Swal.fire({
           title: '¡Lo sentimos!',
@@ -65,9 +64,7 @@ export default function Login() {
         icon: 'error',
         confirmButtonText: 'Okay',
       });
-    } finally {
-      setIsSubmitting(false);
-    }
+    } 
   };
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
