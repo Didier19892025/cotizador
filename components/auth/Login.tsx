@@ -70,8 +70,8 @@ export default function Login() {
       };
   return (
     <div className="flex justify-center items-center min-h-screen">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-96">
-        <h1 className="text-3xl font-semibold text-center mb-6">Login</h1>
+      <div className="bg-white p-8 rounded-2xl shadow-lg w-96">
+        <h1 className="text-lg font-semibold text-center mb-6">LOGIN</h1>
         {/* Formulario de login */}
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div>

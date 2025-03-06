@@ -14,6 +14,7 @@ export default {
         violet: '#7c3aed', // Color violet principal
         gray: '#6b7280',   // Color gray principal
         white: '#ffffff',  // Color blanco
+        red: '#dc2626',    // Color rojo
       },
     },
   },

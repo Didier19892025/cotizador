@@ -76,7 +76,7 @@ export default function Header() {
         <div>
           <button
             onClick={handleLogout}
-            className="flex w-auto justify-center items-center gap-2 text-white bg-indigo-300 py-2 px-6 rounded-2xl hover:bg-red-600 transition-all duration-300 ease-in-out"
+            className="flex w-auto justify-center items-center gap-2 text-white bg-red py-2 px-6 rounded-2xl hover:bg-red-600 transition-all duration-300 ease-in-out"
           >
             Salir
             <LogOutIcon size={14} />
