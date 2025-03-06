@@ -1,4 +1,4 @@
-import Navigation from "@/components/Navigation";
+import Header from "@/components/Header";
 
 
 export default function AdminLayout({
@@ -8,12 +8,12 @@ export default function AdminLayout({
 }>) {
   return (
       <>
-      <div className=" flex">
-        <Navigation />
-       <main className="flex-1">
+      
+        <Header />
+       
        {children}
-       </main>
-      </div>
+       
+      
       </>
   );
 }
