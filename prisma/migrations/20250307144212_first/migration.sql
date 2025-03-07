@@ -26,6 +26,7 @@ CREATE TABLE `CompensationCurrency` (
 -- CreateTable
 CREATE TABLE `Users` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `fullNameUser` VARCHAR(191) NOT NULL,
     `userName` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
     `rol` ENUM('admin', 'user') NOT NULL,
@@ -40,15 +41,13 @@ CREATE TABLE `Employee` (
     `fullName` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `status` BOOLEAN NOT NULL,
-    `latamId` INTEGER NOT NULL,
+    `latamId` VARCHAR(191) NOT NULL,
     `typeEmployee` VARCHAR(191) NOT NULL,
     `roleId` INTEGER NOT NULL,
-    `userId` INTEGER NULL,
 
     UNIQUE INDEX `Employee_email_key`(`email`),
     UNIQUE INDEX `Employee_latamId_key`(`latamId`),
     UNIQUE INDEX `Employee_roleId_key`(`roleId`),
-    UNIQUE INDEX `Employee_userId_key`(`userId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -59,7 +58,6 @@ CREATE TABLE `ServicesCPH` (
     `costServiceCph` DOUBLE NOT NULL,
     `TecnologyId` INTEGER NOT NULL,
 
-    INDEX `ServicesCPH_TecnologyId_fkey`(`TecnologyId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -70,7 +68,6 @@ CREATE TABLE `ServicesCpa` (
     `costServiceCpa` DOUBLE NOT NULL,
     `TecnologyId` INTEGER NOT NULL,
 
-    INDEX `ServicesCpa_TecnologyId_fkey`(`TecnologyId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -81,7 +78,6 @@ CREATE TABLE `TicketCpa` (
     `costTicked` DOUBLE NOT NULL,
     `TecnologyId` INTEGER NOT NULL,
 
-    INDEX `TicketCpa_TecnologyId_fkey`(`TecnologyId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -98,9 +94,6 @@ ALTER TABLE `CompensationCurrency` ADD CONSTRAINT `CompensationCurrency_roleId_f
 
 -- AddForeignKey
 ALTER TABLE `Employee` ADD CONSTRAINT `Employee_roleId_fkey` FOREIGN KEY (`roleId`) REFERENCES `Roles`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Employee` ADD CONSTRAINT `Employee_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `Users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `ServicesCPH` ADD CONSTRAINT `ServicesCPH_TecnologyId_fkey` FOREIGN KEY (`TecnologyId`) REFERENCES `Tecnology`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

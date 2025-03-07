@@ -1,6 +1,6 @@
 "use client"
 
-import { EmployeeUpdateZod, EmployeeUpdateZodType } from '@/schemas/zod.employees'
+import { EmployeeUpdateZod, EmployeeUpdateZodType } from '@/schemas/zodEmployees'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { countries } from '@/data/countries';
 import { currencies } from '@/data/currencies';
@@ -8,8 +8,8 @@ import { currencies } from '@/data/currencies';
 import { AtSign, Brain, CircleDollarSign, Coins, CopyCheck, Fingerprint, LandPlot, MapPinHouse, PersonStanding, User } from 'lucide-react'
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { EmployeesType } from '@/types/employees.type';
-import { updateEmployee } from '@/server/employees';
+import { EmployeesType } from '@/types/employeesType';
+import { updateEmployee } from '@/server/employeesActions';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 interface FormEditEmployeeProps {

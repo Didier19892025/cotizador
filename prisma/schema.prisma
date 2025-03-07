@@ -18,6 +18,8 @@ model Roles {
   currency             CurrencyType
   CompensationCurrency CompensationCurrency?
   Employee             Employee?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
 }
 
 model CompensationCurrency {
@@ -26,14 +28,18 @@ model CompensationCurrency {
   TypeCurrency String
   roleId       Int    @unique
   role         Roles  @relation(fields: [roleId], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Users {
-  id       Int       @id @default(autoincrement())
-  userName String?   @unique
-  password String?
-  rol      UserRole?
-  Employee Employee?
+  id           Int       @id @default(autoincrement())
+  fullNameUser String
+  userName     String    @unique
+  password     String
+  rol          UserRole
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 }
 
 model Employee {
@@ -44,9 +50,9 @@ model Employee {
   latamId      String  @unique
   typeEmployee String
   roleId       Int     @unique
-  userId       Int?    @unique
   role         Roles   @relation(fields: [roleId], references: [id])
-  user         Users?  @relation(fields: [userId], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model ServicesCPH {
@@ -55,8 +61,9 @@ model ServicesCPH {
   costServiceCph Float
   TecnologyId    Int
   Tecnology      Tecnology @relation(fields: [TecnologyId], references: [id])
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 
-  @@index([TecnologyId], map: "ServicesCPH_TecnologyId_fkey")
 }
 
 model ServicesCpa {
@@ -65,8 +72,9 @@ model ServicesCpa {
   costServiceCpa Float
   TecnologyId    Int
   Tecnology      Tecnology @relation(fields: [TecnologyId], references: [id])
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
 
-  @@index([TecnologyId], map: "ServicesCpa_TecnologyId_fkey")
 }
 
 model TicketCpa {
@@ -75,8 +83,8 @@ model TicketCpa {
   costTicked  Float
   TecnologyId Int
   Tecnology   Tecnology @relation(fields: [TecnologyId], references: [id])
-
-  @@index([TecnologyId], map: "TicketCpa_TecnologyId_fkey")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model Tecnology {
@@ -85,6 +93,8 @@ model Tecnology {
   ServicesCPH   ServicesCPH[]
   ServicesCPA   ServicesCpa[]
   TicketCPA     TicketCpa[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 }
 
 enum Country {

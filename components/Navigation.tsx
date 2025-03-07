@@ -1,13 +1,14 @@
 "use client"
 
-import { Drill, House, UsersRound } from "lucide-react"
+import { Drill, House, User, UsersRound } from "lucide-react"
 import Link from "next/link"
 
 
 const adminNavigation = [
-  { url: '/home', text: 'Inicio', blank: false, icon: <House className="w-4 h-4" /> },
-  { url: '/employees', text: 'Empleados', blank: false, icon: <UsersRound className="w-4 h-4" /> },
-  { url: '/new-proyect', text: 'Servicios', blank: false, icon: <Drill className="w-4 h-4" /> },
+  { url: '/home', text: 'Home', blank: false, icon: <House className="w-4 h-4" /> },
+  { url: '/employees', text: 'Employees', blank: false, icon: <UsersRound className="w-4 h-4" /> },
+  { url: '/new-proyect', text: 'Services', blank: false, icon: <Drill className="w-4 h-4" /> },
+  { url: '/users', text: 'Users', blank: false, icon: <User className="w-4 h-4" /> },
 ]
 
 export default function Navigation() {
