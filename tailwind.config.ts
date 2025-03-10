@@ -17,13 +17,14 @@ export default {
         red: '#dc2626',    // Color rojo
       },
       keyframes:{
-        slideDown:{
-          '0%':{transform:'translateY(-100%)'},
-          '100%':{transform:'translateY(0)'}
+        palpito:{
+          '0%': {transform: 'scale(0.9)', opacity:'0.7'},
+          '50%': {transform:'scale(1.05)', opacity:'1'},
+          '100%': {transform: 'scale(1)', opacity:'1'}
         }
       },
       animation:{
-        slideDown:'slideDown 1s ease-in-out'
+        palpito:'palpito 1s ease-out'
       }
     },
   },
