@@ -6,9 +6,7 @@ export  default async function UsersPage() {
     const users = await getAllUsers();
   return (
     <>
-    <main>
         <UsersList users={users}/>
-    </main>
     </>
   )
 }

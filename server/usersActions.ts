@@ -32,7 +32,7 @@ export async function createUser(data: UserSchemaType) {
 
         const newUser = await prisma.users.create({
             data: {
-                fullNameUser: data.fullNamaUser,
+                fullNameUser: data.fullNameUser,
                 userName: data.userName,
                 password: hashedPassword,
                 rol: data.rol,
@@ -61,3 +61,43 @@ export async function getAllUsers(): Promise<UserType[]> {
     const users = await prisma.users.findMany();
     return users as UserType[];
 }
+
+
+
+// Función para eliminar un usuario
+export async function deleteUser(id: number) {
+    try {
+        // Verificar si el usuario existe antes de intentar eliminarlo
+        const userExists = await prisma.users.findFirst({
+            where: { id },  // Aquí debe ser `id` (no `userId` como lo tenías antes)
+        });
+
+        if (!userExists) {
+            return {
+                success: false,
+                message: "User not found",
+            };
+        }
+
+        // Eliminar el usuario de la base de datos
+        await prisma.users.delete({
+            where: { id },
+        });
+
+        // Revalidar la ruta para actualizar la lista de usuarios
+        revalidatePath('users');  
+        
+        return {
+            success: true,
+            message: "User deleted successfully",
+        };
+
+    } catch (error) {
+        console.error(error);
+        return {
+            success: false,
+            message: "Error deleting user",
+        };
+    }
+}
+

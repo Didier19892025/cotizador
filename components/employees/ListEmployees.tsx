@@ -2,7 +2,7 @@
 
 import { deleteEmployee } from "@/server/employeesActions";
 import NoRecords from "@/src/ui/NoRecords";
-import Heading from "@/src/utils/Heading";
+import Heading from "@/src/ui/Heading";
 import { EmployeesType } from "@/types/employeesType";
 import { Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";

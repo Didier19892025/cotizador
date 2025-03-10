@@ -17,7 +17,6 @@ export async function login(data: loginType) {
   try {
     const userFound = await prisma.users.findUnique({
       where: { userName: data.userName },
-      include: { Employee: true },
     });
 
     if (!userFound) {

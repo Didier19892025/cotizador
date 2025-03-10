@@ -1,4 +1,4 @@
-import Heading from "@/src/utils/Heading";
+import Heading from "@/src/ui/Heading";
 import { X } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -57,7 +57,7 @@ export default function FormUser({ onClose }: FormUserProps) {
     };
 
     return (
-        <main className="bg-black/50 fixed top-0 left-0 right-0 w-full flex items-center justify-center h-screen ">
+        <main className="bg-black/50 animate-palpito fixed top-0 left-0 right-0 w-full flex items-center justify-center h-screen ">
             <div className="bg-white rounded-2xl w-full max-w-2xl shadow-xl mx-auto p-4 animate-palpito">
                 <section className='flex items-center justify-between'>
                     <Heading>New User Form</Heading>
@@ -77,11 +77,11 @@ export default function FormUser({ onClose }: FormUserProps) {
                             <div>
                                 <label className="block text-sm font-medium text-gray-700">Full Name:</label>
                                 <input
-                                    {...register("fullNamaUser")}
+                                    {...register("fullNameUser")}
                                     className="w-full p-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500"
                                 />
-                                {errors.fullNamaUser && (
-                                    <p className="text-red text-xs">{errors.fullNamaUser.message}</p>
+                                {errors.fullNameUser && (
+                                    <p className="text-red text-xs">{errors.fullNameUser.message}</p>
                                 )}
                             </div>
 
