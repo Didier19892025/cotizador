@@ -16,43 +16,45 @@ model Roles {
   cphCode              String
   cph                  Float
   currency             CurrencyType
+  createdAt            DateTime              @default(now())
+  updatedAt            DateTime              @updatedAt
   CompensationCurrency CompensationCurrency?
   Employee             Employee?
-  createdAt            DateTime  @default(now())
-  updatedAt            DateTime  @updatedAt
+  Proyect               Proyect[]
 }
 
 model CompensationCurrency {
-  id           Int    @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
   ammoutFx     Float
   TypeCurrency String
-  roleId       Int    @unique
-  role         Roles  @relation(fields: [roleId], references: [id])
+  roleId       Int      @unique
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  role         Roles    @relation(fields: [roleId], references: [id])
 }
 
 model Users {
-  id           Int       @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
   fullNameUser String
-  userName     String    @unique
+  userName     String   @unique
   password     String
   rol          UserRole
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Employee {
-  id           Int     @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
   fullName     String
-  email        String  @unique
+  email        String   @unique
   status       Boolean
-  latamId      String  @unique
+  latamId      String   @unique
   typeEmployee String
-  roleId       Int     @unique
-  role         Roles   @relation(fields: [roleId], references: [id])
+  roleId       Int      @unique
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  role         Roles    @relation(fields: [roleId], references: [id])
+  Proyect      Proyect[]
 }
 
 model ServicesCPH {
@@ -60,10 +62,11 @@ model ServicesCPH {
   nameServiceCph String
   costServiceCph Float
   TecnologyId    Int
-  Tecnology      Tecnology @relation(fields: [TecnologyId], references: [id])
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
+  Tecnology      Tecnology @relation(fields: [TecnologyId], references: [id])
 
+  @@index([TecnologyId], map: "ServicesCPH_TecnologyId_fkey")
 }
 
 model ServicesCpa {
@@ -71,10 +74,11 @@ model ServicesCpa {
   nameServiceCpa String
   costServiceCpa Float
   TecnologyId    Int
-  Tecnology      Tecnology @relation(fields: [TecnologyId], references: [id])
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
+  Tecnology      Tecnology @relation(fields: [TecnologyId], references: [id])
 
+  @@index([TecnologyId], map: "ServicesCpa_TecnologyId_fkey")
 }
 
 model TicketCpa {
@@ -82,19 +86,23 @@ model TicketCpa {
   nameTicked  String
   costTicked  Float
   TecnologyId Int
-  Tecnology   Tecnology @relation(fields: [TecnologyId], references: [id])
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  Tecnology   Tecnology @relation(fields: [TecnologyId], references: [id])
+
+  @@index([TecnologyId], map: "TicketCpa_TecnologyId_fkey")
 }
 
 model Tecnology {
   id            Int           @id @default(autoincrement())
   nameTecnology String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
   ServicesCPH   ServicesCPH[]
   ServicesCPA   ServicesCpa[]
   TicketCPA     TicketCpa[]
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  Products      Products[]
+  Proyect       Proyect[]
 }
 
 enum Country {
@@ -138,4 +146,42 @@ enum CurrencyType {
   NIO
   XDC
   VEF
+}
+
+model Products{
+  id          Int           @id @default(autoincrement())
+  TecnologyId Int
+  Tecnology   Tecnology    @relation(fields: [TecnologyId], references: [id])
+  TypeProduct   String    
+  ProductBrand  String 
+  ProductModel  String
+  ProductClassification String
+  Proyect Proyect[]
+ }
+
+
+model Proyect {
+  id          Int           @id @default(autoincrement())
+  RolesId     Int
+  Roles Roles @relation(fields: [RolesId], references: [id])
+  Country Country
+  EmployeeId  Int
+  Employee Employee @relation(fields: [EmployeeId], references: [id])
+  TecnologyId Int
+  Tecnology   Tecnology    @relation(fields: [TecnologyId], references: [id])
+  ProductsId Int 
+  Products Products @relation(fields: [ProductsId], references: [id])
+  TypeProyect String
+  CostTicked  Float
+  CurrencyType CurrencyType
+  ServiceEnum ServiceEnum
+}
+
+
+enum ServiceEnum {
+  Planning 
+  Desing 
+  Implementation 
+  Operation 
+  Optimization
 }
