@@ -12,7 +12,7 @@ export default {
         indigo: '#4f46e5', // Color indigo principal
         purple: '#f3e8ff', // Color purple principal
         violet: '#7c3aed', // Color violet principal
-        gray: '#6b7280',   // Color gray principal
+        gray: '#404040',   // Color gray principal
         white: '#ffffff',  // Color blanco
         red: '#dc2626',    // Color rojo
       },

@@ -60,7 +60,7 @@ export default function UsersList({ users }: UsersListProps) {
 
     return (
         <>
-            <main className='bg-white p-4  rounded-2xl shadow-lg'>
+            <main className=''>
                 {/* Header section */}
                 <section className='flex items-center justify-between'>
                     <Heading>Users List</Heading>

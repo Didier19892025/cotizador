@@ -10,7 +10,7 @@ export default function AdminLayout({
     <>
 
         <Header />
-      <div className=" max-w-screen-lg mx-auto rounded-2xl mt-4  ">
+      <div className=" max-w-screen-lg mx-auto rounded-2xl mt-4 bg-white p-4">
 
         {children}
 

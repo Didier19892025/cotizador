@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { AuthProvider } from "@/src/context/AuthContext";
 
 
 
@@ -18,7 +19,10 @@ export default function RootLayout({
       <body
         className=" min-h-screen bg-gradient-to-br from-indigo/30 to-purple text-gray"
       >
-        {children}
+
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

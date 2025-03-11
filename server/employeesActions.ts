@@ -7,13 +7,15 @@ import { revalidatePath } from "next/cache";
 
 // funcion para obtener todos los empleados
 export async function getAllEmployees(): Promise<EmployeesType[]> {
-   const employees = await prisma.employee.findMany({
+  const employees = await prisma.employee.findMany({
     include: {
-      role: true,
+      role: true,  // Incluir la relación de Roles
+      project: true,  // Incluir la relación de Projects (nota que el nombre del campo es 'project' en lugar de 'Proyects')
     },
-   });
-   return employees as EmployeesType[];
+  });
+  return employees as EmployeesType[];
 }
+
 
 // funcion crear un empleado
 export async function createEmployee(data: EmployeeCreateZodType) {

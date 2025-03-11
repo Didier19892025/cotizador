@@ -2,7 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body {
+  font-size: 85.5%;
+}
 
-html body{
-    font-size: 85.5%;
+/* Estilos para la barra de desplazamiento */
+::-webkit-scrollbar {
+  width: 1rem; /* Ancho fijo de 1rem (w-4) */
+  background-color: transparent;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #c1c1c1; /* Gris claro por defecto */
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+/* Cambia solo el color al hacer hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #888888; /* Gris más oscuro al hacer hover */
+}
+
+/* Compatibilidad con Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #c1c1c1 #f1f1f1;
+}
+
+*:hover {
+  scrollbar-color: #888888 #f1f1f1;
 }

@@ -93,7 +93,7 @@ export default function FormEditEmployee({ employee }: FormEditEmployeeProps) {
                                 <label className='block mb-1'>Full Name</label>
                                 <div className="flex items-center">
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
-                                        <User size={18} color='blue' />
+                                        <User size={18}   />
                                         <input
                                             {...register("fullName")}
                                             className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
@@ -108,7 +108,7 @@ export default function FormEditEmployee({ employee }: FormEditEmployeeProps) {
                                 <label className='block mb-1'>Email</label>
                                 <div className="flex items-center">
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
-                                        <AtSign size={18} color='blue' />
+                                        <AtSign size={18}   />
                                         <input
                                             {...register("email")}
                                             type='email' className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
@@ -123,7 +123,7 @@ export default function FormEditEmployee({ employee }: FormEditEmployeeProps) {
                                 <label className='block mb-1'>Latam ID</label>
                                 <div className="flex items-center">
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
-                                        <Fingerprint size={18} color='blue' />
+                                        <Fingerprint size={18}   />
                                         <input
                                             disabled
                                             {...register("latamId", { valueAsNumber: true })}
@@ -140,7 +140,7 @@ export default function FormEditEmployee({ employee }: FormEditEmployeeProps) {
                                 <label className='block mb-1'>Status</label>
                                 <div className="flex items-center">
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
-                                        <CopyCheck size={18} color='blue' />
+                                        <CopyCheck size={18}   />
                                         <select
                                             {...register("status")}
                                             className='w-full px-4 py-2 border-none focus:outline-none bg-transparent'>
@@ -157,7 +157,7 @@ export default function FormEditEmployee({ employee }: FormEditEmployeeProps) {
                                 <label className='block mb-1'>Type Employee</label>
                                 <div className="flex items-center">
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
-                                        <PersonStanding size={18} color='blue' />
+                                        <PersonStanding size={18}   />
                                         <select
                                             {...register("typeEmployee")}
                                             className='w-full px-4 py-2 border-none focus:outline-none bg-transparent'>
@@ -184,7 +184,7 @@ export default function FormEditEmployee({ employee }: FormEditEmployeeProps) {
                                 <label className='block mb-1'>Job Role</label>
                                 <div className="flex items-center">
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
-                                        <User size={18} color='blue' />
+                                        <User size={18}   />
                                         <input
                                             {...register("jobRole")}
                                             className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
@@ -198,7 +198,7 @@ export default function FormEditEmployee({ employee }: FormEditEmployeeProps) {
                                 <label className='block mb-1'>Area</label>
                                 <div className="flex items-center">
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
-                                        <LandPlot size={18} color='blue' />
+                                        <LandPlot size={18}   />
                                         <input
                                             {...register("area")}
                                             className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
@@ -211,7 +211,7 @@ export default function FormEditEmployee({ employee }: FormEditEmployeeProps) {
                                 <label className='block mb-1'>Cost Center</label>
                                 <div className="flex items-center">
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
-                                        <MapPinHouse size={18} color='blue' />
+                                        <MapPinHouse size={18}   />
                                         <input
                                             {...register("costCenter")}
                                             className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
@@ -224,7 +224,7 @@ export default function FormEditEmployee({ employee }: FormEditEmployeeProps) {
                                 <label className='block mb-1'>CPh Code</label>
                                 <div className="flex items-center">
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
-                                        <Brain size={18} color='blue' />
+                                        <Brain size={18}   />
                                         <input
                                             type='text'
                                             {...register("cphCode")}
@@ -238,7 +238,7 @@ export default function FormEditEmployee({ employee }: FormEditEmployeeProps) {
                                 <label className='block mb-1'>CPh </label>
                                 <div className="flex items-center">
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
-                                        <CircleDollarSign size={18} color='blue' />
+                                        <CircleDollarSign size={18}   />
                                         <input
                                             {...register("cph", { valueAsNumber: true })}
                                             type='number' className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
@@ -251,7 +251,7 @@ export default function FormEditEmployee({ employee }: FormEditEmployeeProps) {
                                 <label className='block mb-1'>Origin Country</label>
                                 <div className="flex items-center">
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
-                                        <CopyCheck size={18} color='blue' />
+                                        <CopyCheck size={18}   />
                                         <select
                                             {...register("country")}
                                             className='w-full px-4 py-2 border-none focus:outline-none bg-transparent'>
@@ -272,7 +272,7 @@ export default function FormEditEmployee({ employee }: FormEditEmployeeProps) {
                                 <label className='block mb-1'>Type Currency </label>
                                 <div className="flex items-center">
                                     <div className="flex-1 flex items-center border-b border-gray-300 focus-within:border-blue-400">
-                                        <Coins size={18} color='blue' />
+                                        <Coins size={18}   />
                                         <select
                                             {...register("typeCurrency")}
                                             className='w-full px-4 py-2 border-none focus:outline-none bg-transparent'>

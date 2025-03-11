@@ -19,17 +19,16 @@ model Roles {
   createdAt            DateTime              @default(now())
   updatedAt            DateTime              @updatedAt
   CompensationCurrency CompensationCurrency?
-  Employee             Employee?
-  Proyect               Proyect[]
+  employee             Employee[]
 }
 
 model CompensationCurrency {
   id           Int      @id @default(autoincrement())
   ammoutFx     Float
-  TypeCurrency String
   roleId       Int      @unique
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  typeCurrency String
   role         Roles    @relation(fields: [roleId], references: [id])
 }
 
@@ -44,41 +43,41 @@ model Users {
 }
 
 model Employee {
-  id           Int      @id @default(autoincrement())
+  id           Int        @id @default(autoincrement())
   fullName     String
-  email        String   @unique
+  email        String     @unique
   status       Boolean
-  latamId      String   @unique
+  latamId      String     @unique
   typeEmployee String
-  roleId       Int      @unique
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  role         Roles    @relation(fields: [roleId], references: [id])
-  Proyect      Proyect[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  roleId       Int        @unique
+  role         Roles      @relation(fields: [roleId], references: [id])
+  project      Projects[]
 }
 
 model ServicesCPH {
   id             Int       @id @default(autoincrement())
   nameServiceCph String
   costServiceCph Float
-  TecnologyId    Int
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
-  Tecnology      Tecnology @relation(fields: [TecnologyId], references: [id])
+  tecnologyId    Int
+  tecnology      Tecnology @relation(fields: [tecnologyId], references: [id])
 
-  @@index([TecnologyId], map: "ServicesCPH_TecnologyId_fkey")
+  @@index([tecnologyId], map: "ServicesCPH_tecnologyId_fkey")
 }
 
 model ServicesCpa {
   id             Int       @id @default(autoincrement())
   nameServiceCpa String
   costServiceCpa Float
-  TecnologyId    Int
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
-  Tecnology      Tecnology @relation(fields: [TecnologyId], references: [id])
+  tecnologyId    Int
+  tecnology      Tecnology @relation(fields: [tecnologyId], references: [id])
 
-  @@index([TecnologyId], map: "ServicesCpa_TecnologyId_fkey")
+  @@index([tecnologyId], map: "ServicesCpa_tecnologyId_fkey")
 }
 
 model TicketCpa {
@@ -88,7 +87,7 @@ model TicketCpa {
   TecnologyId Int
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  Tecnology   Tecnology @relation(fields: [TecnologyId], references: [id])
+  tecnology   Tecnology @relation(fields: [TecnologyId], references: [id])
 
   @@index([TecnologyId], map: "TicketCpa_TecnologyId_fkey")
 }
@@ -98,11 +97,43 @@ model Tecnology {
   nameTecnology String
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
-  ServicesCPH   ServicesCPH[]
-  ServicesCPA   ServicesCpa[]
-  TicketCPA     TicketCpa[]
-  Products      Products[]
-  Proyect       Proyect[]
+  products      Products[]
+  projects      Projects[]
+  servicesCPH   ServicesCPH[]
+  servicesCPA   ServicesCpa[]
+  ticketCPA     TicketCpa[]
+}
+
+model Products {
+  id                    Int        @id @default(autoincrement())
+  productBrand          String
+  productClassification String
+  productModel          String
+  tecnologyId           Int
+  typeProduct           String
+  tecnology             Tecnology  @relation(fields: [tecnologyId], references: [id])
+  projects              Projects[]
+
+  @@index([tecnologyId], map: "Products_tecnologyId_fkey")
+}
+
+model Projects {
+  id           Int          @id @default(autoincrement())
+  country      Country
+  typeProject  String
+  costTicked   Float
+  currencyType CurrencyType
+  serviceEnum  ServiceEnum
+  employeeId   Int
+  employee     Employee     @relation(fields: [employeeId], references: [id])
+  productsId   Int
+  products     Products     @relation(fields: [productsId], references: [id])
+  tecnologyId  Int
+  tecnology    Tecnology    @relation(fields: [tecnologyId], references: [id])
+
+  @@index([employeeId], map: "Projects_employeeId_fkey")
+  @@index([productsId], map: "Projects_productsId_fkey")
+  @@index([tecnologyId], map: "Projects_tecnologyId_fkey")
 }
 
 enum Country {
@@ -148,40 +179,10 @@ enum CurrencyType {
   VEF
 }
 
-model Products{
-  id          Int           @id @default(autoincrement())
-  TecnologyId Int
-  Tecnology   Tecnology    @relation(fields: [TecnologyId], references: [id])
-  TypeProduct   String    
-  ProductBrand  String 
-  ProductModel  String
-  ProductClassification String
-  Proyect Proyect[]
- }
-
-
-model Proyect {
-  id          Int           @id @default(autoincrement())
-  RolesId     Int
-  Roles Roles @relation(fields: [RolesId], references: [id])
-  Country Country
-  EmployeeId  Int
-  Employee Employee @relation(fields: [EmployeeId], references: [id])
-  TecnologyId Int
-  Tecnology   Tecnology    @relation(fields: [TecnologyId], references: [id])
-  ProductsId Int 
-  Products Products @relation(fields: [ProductsId], references: [id])
-  TypeProyect String
-  CostTicked  Float
-  CurrencyType CurrencyType
-  ServiceEnum ServiceEnum
-}
-
-
 enum ServiceEnum {
-  Planning 
-  Desing 
-  Implementation 
-  Operation 
+  Planning
+  Desing
+  Implementation
+  Operation
   Optimization
 }
