@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation'; // Importa usePathname
 const adminNavigation = [
   { url: '/home', text: 'Home', blank: false, icon: <House className="w-4 h-4" /> },
   { url: '/employees', text: 'Employees', blank: false, icon: <UsersRound className="w-4 h-4" /> },
-  // { url: '/new-proyect', text: 'Services', blank: false, icon: <Drill className="w-4 h-4" /> },
+  { url: '/roles', text: 'Roles', blank: false, icon: <Drill className="w-4 h-4" /> },
   { url: '/users', text: 'Users', blank: false, icon: <User className="w-4 h-4" /> },
 ]
 

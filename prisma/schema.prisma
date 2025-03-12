@@ -7,6 +7,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Employee {
+  id           Int        @id @default(autoincrement())
+  fullName     String
+  email        String     @unique
+  status       Boolean
+  phone        String
+  latamId      String     @unique
+  typeEmployee String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  country              Country
+  roleId       Int
+  role         Roles      @relation(fields: [roleId], references: [id])
+}
+
 model Roles {
   id                   Int                   @id @default(autoincrement())
   jobRole              String
@@ -18,19 +33,10 @@ model Roles {
   currency             CurrencyType
   createdAt            DateTime              @default(now())
   updatedAt            DateTime              @updatedAt
-  CompensationCurrency CompensationCurrency?
   employee             Employee[]
+  project              Projects[]
 }
 
-model CompensationCurrency {
-  id           Int      @id @default(autoincrement())
-  ammoutFx     Float
-  roleId       Int      @unique
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  typeCurrency String
-  role         Roles    @relation(fields: [roleId], references: [id])
-}
 
 model Users {
   id           Int      @id @default(autoincrement())
@@ -42,19 +48,7 @@ model Users {
   updatedAt    DateTime @updatedAt
 }
 
-model Employee {
-  id           Int        @id @default(autoincrement())
-  fullName     String
-  email        String     @unique
-  status       Boolean
-  latamId      String     @unique
-  typeEmployee String
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-  roleId       Int        @unique
-  role         Roles      @relation(fields: [roleId], references: [id])
-  project      Projects[]
-}
+
 
 model ServicesCPH {
   id             Int       @id @default(autoincrement())
@@ -65,7 +59,6 @@ model ServicesCPH {
   tecnologyId    Int
   tecnology      Tecnology @relation(fields: [tecnologyId], references: [id])
 
-  @@index([tecnologyId], map: "ServicesCPH_tecnologyId_fkey")
 }
 
 model ServicesCpa {
@@ -77,7 +70,6 @@ model ServicesCpa {
   tecnologyId    Int
   tecnology      Tecnology @relation(fields: [tecnologyId], references: [id])
 
-  @@index([tecnologyId], map: "ServicesCpa_tecnologyId_fkey")
 }
 
 model TicketCpa {
@@ -89,7 +81,6 @@ model TicketCpa {
   updatedAt   DateTime  @updatedAt
   tecnology   Tecnology @relation(fields: [TecnologyId], references: [id])
 
-  @@index([TecnologyId], map: "TicketCpa_TecnologyId_fkey")
 }
 
 model Tecnology {
@@ -114,7 +105,6 @@ model Products {
   tecnology             Tecnology  @relation(fields: [tecnologyId], references: [id])
   projects              Projects[]
 
-  @@index([tecnologyId], map: "Products_tecnologyId_fkey")
 }
 
 model Projects {
@@ -124,16 +114,12 @@ model Projects {
   costTicked   Float
   currencyType CurrencyType
   serviceEnum  ServiceEnum
-  employeeId   Int
-  employee     Employee     @relation(fields: [employeeId], references: [id])
+  roleId   Int
+  roles     Roles    @relation(fields: [roleId], references: [id])
   productsId   Int
   products     Products     @relation(fields: [productsId], references: [id])
   tecnologyId  Int
   tecnology    Tecnology    @relation(fields: [tecnologyId], references: [id])
-
-  @@index([employeeId], map: "Projects_employeeId_fkey")
-  @@index([productsId], map: "Projects_productsId_fkey")
-  @@index([tecnologyId], map: "Projects_tecnologyId_fkey")
 }
 
 enum Country {

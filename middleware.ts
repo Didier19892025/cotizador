@@ -11,7 +11,7 @@ export function middleware(request: NextRequest) {
     const publicRoutes = ['/']; // Ruta de login es pública
     
     // Definimos las rutas protegidas (requieren token)
-    const protectedRoutes = ['/home', '/users', '/employees', '/employees/new', '/admin', '/new-proyect'];
+    const protectedRoutes = ['/home', '/users', '/employees', '/employees/new', '/admin', '/roles'];
     
     // Verificar si la ruta actual es una ruta protegida o subpágina de una ruta protegida
     const isProtectedRoute = protectedRoutes.some(route => 
