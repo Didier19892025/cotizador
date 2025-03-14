@@ -1,24 +1,19 @@
 "use server";
 
-import { EmployeeCreateZodType } from "@/schemas/zodEmployees";
+import { EmployeeZodType } from "@/schemas/zodEmployees";
 import { prisma } from "@/src/lib/prisma";
 import { EmployeesType } from "@/types/employeesType";
 import { revalidatePath } from "next/cache";
 
 // funcion para obtener todos los empleados
 export async function getAllEmployees(): Promise<EmployeesType[]> {
-  const employees = await prisma.employee.findMany({
-    include: {
-      role: true,  // Incluir la relación de Roles
-      project: true,  // Incluir la relación de Projects (nota que el nombre del campo es 'project' en lugar de 'Proyects')
-    },
-  });
+  const employees = await prisma.employee.findMany();
   return employees as EmployeesType[];
 }
 
 
 // funcion crear un empleado
-export async function createEmployee(data: EmployeeCreateZodType) {
+export async function createEmployee(data: EmployeeZodType) {
   console.log("data llegando al server", data);
   if (!data) {
     return {
@@ -48,41 +43,24 @@ export async function createEmployee(data: EmployeeCreateZodType) {
 
  
     // iniciamos la creacion
-    const result = await prisma.$transaction(async (tx) => {
-
-      // creamos el roles
-      const role = await tx.roles.create({
-        data: {
-          jobRole: data.jobRole,
-          country: data.country,
-          area: data.area,
-          cc: data.costCenter,
-          cphCode: data.cphCode,
-          cph: data.cph,
-          currency: data.typeCurrency,
-        },
-      });
-
-      // creamos el empleado
-      const employee = await tx.employee.create({
-        data: {
-          fullName: data.fullName,
-          email: data.email,
-          status: data.status,
-          latamId: data.latamId,
-          typeEmployee: data.typeEmployee,
-          roleId: role.id,
-        },
-      });
-      return { employee, role };
-    });
+    const newEmployee = await prisma.employee.create({
+      data: {
+        fullName: data.fullName,
+        email: data.email,
+        status: data.status,
+        latamId: data.latamId,
+        phone: data.phone,
+        country: data.country,
+        typeEmployee: data.typeEmployee,
+      },
+    })
 
     revalidatePath("/employees");
 
     return {
       success: true,
       message: "Employee created successfully",
-      data: result,
+      data: newEmployee,
     };
   } catch (error) {
     console.log("error", error);

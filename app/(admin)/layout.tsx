@@ -9,11 +9,13 @@ export default function AdminLayout({
   return (
     <>
 
-        <Header />
-      <div className=" max-w-screen-lg mx-auto rounded-2xl mt-4 bg-white p-4">
+      <Header />
+      <div className="px-4">
+        <div className=" max-w-screen-2xl mx-auto rounded-2xl mt-4 bg-white p-4">
 
-        {children}
+          {children}
 
+        </div>
       </div>
 
     </>

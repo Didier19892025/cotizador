@@ -1,6 +1,6 @@
 "use client"
 
-import { deleteEmployee } from "@/server/employeesActions";
+import { deleteEmployee } from "@/actions/employeesActions";
 import NoRecords from "@/src/ui/NoRecords";
 import Heading from "@/src/ui/Heading";
 import { EmployeesType } from "@/types/employeesType";

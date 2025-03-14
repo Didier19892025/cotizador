@@ -1,5 +1,5 @@
 import ListEmployees from "@/components/employees/ListEmployees";
-import { getAllEmployees } from "@/server/employeesActions";
+import { getAllEmployees } from "@/actions/employeesActions";
 
 
 

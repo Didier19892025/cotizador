@@ -7,7 +7,7 @@ import Heading from '@/src/ui/Heading'
 import { UserType } from '@/types/userType'
 import FormUser from './FormUser'
 import Swal from 'sweetalert2'
-import { deleteUser } from '@/server/usersActions'
+import { deleteUser } from '@/actions/usersActions'
 
 interface UsersListProps {
     users: UserType[]

@@ -1,17 +1,16 @@
 "use client"
 
-import { EmployeeCreateZod, EmployeeCreateZodType } from '@/schemas/zodEmployees'
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { countries } from '@/data/countries';
-import { currencies } from '@/data/currencies';
 
 
-import { AtSign, Brain, CircleDollarSign, Coins, CopyCheck, Fingerprint, LandPlot, MapPinHouse, PersonStanding, User, X } from 'lucide-react'
+import { AtSign,  CopyCheck, Fingerprint, PersonStanding, Smartphone, User, X } from 'lucide-react'
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
-import { createEmployee } from '@/server/employeesActions';
+import { createEmployee } from '@/actions/employeesActions';
+import { EmployeeZod, EmployeeZodType } from "@/schemas/zodEmployees";
 
 
 
@@ -30,13 +29,14 @@ export default function FormCreateEmployee({ onClose }: FormCreateEmployeeProps)
         handleSubmit,
         formState: { errors },
         reset,
-    } = useForm<EmployeeCreateZodType>({
-        resolver: zodResolver(EmployeeCreateZod),
+    } = useForm<EmployeeZodType>({
+        resolver: zodResolver(EmployeeZod),
         mode: "onSubmit",
     });
 
 
-    const onSubmit = async (data: EmployeeCreateZodType) => {
+    const onSubmit = async (data: EmployeeZodType) => {
+        console.log('informacion enviada al server',data);
         setIsSubmitting(true)
         try {
 
@@ -95,7 +95,7 @@ export default function FormCreateEmployee({ onClose }: FormCreateEmployeeProps)
                         <form onSubmit={handleSubmit(onSubmit)}>
                             {/*section de datos basicos*/}
 
-                            <section className=' mb-4 p-4 border-b border-gray/40 pb-8'>
+                            <section className=' mb-4 p-4 pb-8'>
                                 <h2 className='mb-4 font-medium'>Basic Data</h2>
                                 <div className='grid grid-col-1 lg:grid-cols-3 gap-4'>
                                     <div>
@@ -144,6 +144,22 @@ export default function FormCreateEmployee({ onClose }: FormCreateEmployeeProps)
                                         )}
                                     </div>
                                     <div>
+                                        <label className='block mb-1'>Phone</label>
+                                        <div className="flex items-center">
+                                            <div className="flex-1 flex items-center border-b border-gray/20 focus-within:border-blue-400">
+                                                <Smartphone size={18}   />
+                                                <input
+                                                    {...register("phone")}
+                                                    type='number' className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
+                                            </div>
+                                        </div>
+                                        {errors.phone && (
+                                            <p className='text-red text-xs'>{errors.phone.message}</p>
+
+                                        )}
+                                    </div>
+                                  
+                                    <div>
                                         <label className='block mb-1'>Status</label>
                                         <div className="flex items-center">
                                             <div className="flex-1 flex items-center border-b border-gray/20 focus-within:border-blue-400">
@@ -180,79 +196,6 @@ export default function FormCreateEmployee({ onClose }: FormCreateEmployeeProps)
                                         {errors.typeEmployee && (
                                             <p className='text-red text-xs'>{errors.typeEmployee.message}</p>)}
                                     </div>
-                                </div>
-                            </section>
-
-                            {/*section de roles*/}
-                            <section className=' mt-4 p-4 border-b border-gray/40 pb-8'>
-                                <h2 className='mb-4 font-medium'>Roles Data</h2>
-                                <div className='grid grid-col-1 lg:grid-cols-3 gap-4'>
-                                    <div>
-                                        <label className='block mb-1'>Job Role</label>
-                                        <div className="flex items-center">
-                                            <div className="flex-1 flex items-center border-b border-gray/20 focus-within:border-blue-400">
-                                                <User size={18}   />
-                                                <input
-                                                    {...register("jobRole")}
-                                                    className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
-                                            </div>
-                                        </div>
-                                        {errors.jobRole && (
-                                            <p className='text-red text-xs'>{errors.jobRole.message}</p>)}
-
-                                    </div>
-                                    <div>
-                                        <label className='block mb-1'>Area</label>
-                                        <div className="flex items-center">
-                                            <div className="flex-1 flex items-center border-b border-gray/20 focus-within:border-blue-400">
-                                                <LandPlot size={18}   />
-                                                <input
-                                                    {...register("area")}
-                                                    className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
-                                            </div>
-                                        </div>
-                                        {errors.area && (
-                                            <p className='text-red text-xs'>{errors.area.message}</p>)}
-                                    </div>
-                                    <div>
-                                        <label className='block mb-1'>Cost Center</label>
-                                        <div className="flex items-center">
-                                            <div className="flex-1 flex items-center border-b border-gray/20 focus-within:border-blue-400">
-                                                <MapPinHouse size={18}   />
-                                                <input
-                                                    {...register("costCenter")}
-                                                    className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
-                                            </div>
-                                        </div>
-                                        {errors.costCenter && (
-                                            <p className='text-red text-xs'>{errors.costCenter.message}</p>)}
-                                    </div>
-                                    <div>
-                                        <label className='block mb-1'>CPh Code</label>
-                                        <div className="flex items-center">
-                                            <div className="flex-1 flex items-center border-b border-gray/20 focus-within:border-blue-400">
-                                                <Brain size={18}   />
-                                                <input
-                                                    {...register("cphCode")}
-                                                    className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
-                                            </div>
-                                        </div>
-                                        {errors.cphCode && (
-                                            <p className='text-red text-xs'>{errors.cphCode.message}</p>)}
-                                    </div>
-                                    <div>
-                                        <label className='block mb-1'>CPh </label>
-                                        <div className="flex items-center">
-                                            <div className="flex-1 flex items-center border-b border-gray/20 focus-within:border-blue-400">
-                                                <CircleDollarSign size={18}   />
-                                                <input
-                                                    {...register("cph")}
-                                                    type='number' className='w-full px-4 py-2 border-none focus:outline-none bg-transparent' />
-                                            </div>
-                                        </div>
-                                        {errors.cph && (
-                                            <p className='text-red text-xs'>{errors.cph.message}</p>)}
-                                    </div>
                                     <div>
                                         <label className='block mb-1'>Origin Country</label>
                                         <div className="flex items-center">
@@ -274,27 +217,6 @@ export default function FormCreateEmployee({ onClose }: FormCreateEmployeeProps)
                                         {errors.country && (
                                             <p className='text-red text-xs'>{errors.country.message}</p>)}
                                     </div>
-                                    <div>
-                                        <label className='block mb-1'>Type Currency </label>
-                                        <div className="flex items-center">
-                                            <div className="flex-1 flex items-center border-b border-gray/20 focus-within:border-blue-400">
-                                                <Coins size={18}   />
-                                                <select
-                                                    {...register("typeCurrency")}
-                                                    className='w-full px-4 py-2 border-none focus:outline-none bg-transparent'>
-                                                    <option value="">Select a TypeCurrency</option>
-                                                    {currencies.map((currency, index) => (
-                                                        <option key={index} value={currency}>
-                                                            {currency}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            </div>
-                                        </div>
-                                        {errors.typeCurrency && (
-                                            <p className='text-red text-xs'>{errors.typeCurrency.message}</p>)}
-                                    </div>
-
                                 </div>
                             </section>
 

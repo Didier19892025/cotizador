@@ -1,5 +1,5 @@
 import UsersList from "@/components/users/UsersList";
-import { getAllUsers } from "@/server/usersActions";
+import { getAllUsers } from "@/actions/usersActions";
 
 export  default async function UsersPage() {
 

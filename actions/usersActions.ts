@@ -18,7 +18,7 @@ export async function createUser(data: UserSchemaType) {
     }
    
     try {
-        const userExists = await prisma.users.findFirst({
+        const userExists = await prisma.user.findFirst({
             where: { userName: data.userName },
         })
         if (userExists) {
@@ -30,7 +30,7 @@ export async function createUser(data: UserSchemaType) {
 
         const hashedPassword = await bcrypt.hash(data.password, 10);
 
-        const newUser = await prisma.users.create({
+        const newUser = await prisma.user.create({
             data: {
                 fullNameUser: data.fullNameUser,
                 userName: data.userName,
@@ -58,7 +58,7 @@ export async function createUser(data: UserSchemaType) {
 
 
 export async function getAllUsers(): Promise<UserType[]> {
-    const users = await prisma.users.findMany();
+    const users = await prisma.user.findMany();
     return users as UserType[];
 }
 
@@ -68,7 +68,7 @@ export async function getAllUsers(): Promise<UserType[]> {
 export async function deleteUser(id: number) {
     try {
         // Verificar si el usuario existe antes de intentar eliminarlo
-        const userExists = await prisma.users.findFirst({
+        const userExists = await prisma.user.findFirst({
             where: { id },  // Aquí debe ser `id` (no `userId` como lo tenías antes)
         });
 
@@ -80,7 +80,7 @@ export async function deleteUser(id: number) {
         }
 
         // Eliminar el usuario de la base de datos
-        await prisma.users.delete({
+        await prisma.user.delete({
             where: { id },
         });
 

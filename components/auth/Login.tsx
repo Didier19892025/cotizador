@@ -41,8 +41,8 @@ export default function Login() {
 
       if (result.userFound?.rol === 'admin') {
         Swal.fire({
-          title: 'Éxito',
-          text: 'Inicio de sesión exitoso',
+          title: 'Succesfull',
+          text: result.message,
           icon: 'success',
           timer: 1500,
           showConfirmButton: false

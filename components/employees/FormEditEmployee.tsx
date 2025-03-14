@@ -9,7 +9,7 @@ import { AtSign, Brain, CircleDollarSign, Coins, CopyCheck, Fingerprint, LandPlo
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import { EmployeesType } from '@/types/employeesType';
-import { updateEmployee } from '@/server/employeesActions';
+import { updateEmployee } from '@/actions/employeesActions';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 interface FormEditEmployeeProps {

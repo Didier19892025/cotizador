@@ -1,9 +1,12 @@
-import RolesList from "@/components/roles/rolesList";
+import { getAllRoles } from "@/actions/rolesActions";
+import RolesList from "@/components/roles/RolesList";
 
 
-export default function RolesPage() {
+export default async function  RolesPage() {
+  const roles = await getAllRoles()
+  // console.log('roles obtenidos',roles.map(role => role.project.map(pro) => pro);
   return (
     
-    <RolesList />
+    <RolesList roles={roles}/>
   )
 }

@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import { prisma } from "@/src/lib/prisma";
 import { cookies } from "next/headers";
 import { loginType } from "@/schemas/zodLogin";
+import { revalidatePath } from "next/cache";
 
 export async function login(data: loginType) {
   if (!data) {
@@ -15,7 +16,7 @@ export async function login(data: loginType) {
   }
 
   try {
-    const userFound = await prisma.users.findUnique({
+    const userFound = await prisma.user.findUnique({
       where: { userName: data.userName },
     });
 
@@ -69,6 +70,8 @@ export async function login(data: loginType) {
       maxAge: 8 * 60 * 60, // 8 horas en segundos
       sameSite: "lax", // Importante para que funcione con redirecciones
     });
+
+    revalidatePath('/')  
 
     return {
       success: true,

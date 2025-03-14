@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserSchema, UserSchemaType } from "@/schemas/zodUser"; // Assuming your schema is in this path
 import Swal from "sweetalert2";
-import { createUser } from "@/server/usersActions";
+import { createUser } from "@/actions/usersActions";
 import Heading from "@/src/ui/Heading";
 import { useState } from "react";
 
@@ -101,7 +101,7 @@ export default function FormUser({ onClose }: FormUserProps) {
                   />
                 </div>
                 {errors.fullNameUser && (
-                  <p className="text-naranja text-sm">
+                  <p className="text- red text-sm">
                     {errors.fullNameUser.message}
                   </p>
                 )}
@@ -126,7 +126,7 @@ export default function FormUser({ onClose }: FormUserProps) {
                   />
                 </div>
                 {errors.userName && (
-                  <p className="text-naranja text-sm">
+                  <p className="text- red text-sm">
                     {errors.userName.message}
                   </p>
                 )}
@@ -164,7 +164,7 @@ export default function FormUser({ onClose }: FormUserProps) {
                   </button>
                 </div>
                 {errors.password && (
-                  <p className="text-naranja text-sm">
+                  <p className="text- red text-sm">
                     {errors.password.message}
                   </p>
                 )}
@@ -193,7 +193,7 @@ export default function FormUser({ onClose }: FormUserProps) {
                   </select>
                 </div>
                 {errors.rol && (
-                  <p className="text-naranja text-sm">
+                  <p className="text- red text-sm">
                     {errors.rol.message}
                   </p>
                 )}
