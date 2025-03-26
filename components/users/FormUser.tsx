@@ -64,13 +64,13 @@ export default function FormUser({ onClose }: FormUserProps) {
   };
 
   return (
-    <main className="bg-black/50 fixed top-0 left-0 right-0 w-full flex items-center justify-center h-screen">
-      <div className="bg-white rounded-2xl w-full max-w-2xl shadow-xl mx-auto p-4 animate-palpito">
+    <main className="bg-blue/20 backdrop-blur-sm fixed top-0 left-0 right-0 w-full flex items-center justify-center h-screen">
+      <div className="bg-white rounded-3xl   w-full max-w-2xl shadow-xl mx-auto p-4 animate-palpito">
         <section className='flex items-center justify-between'>
           <Heading>New User Form</Heading>
 
           <button
-            className="flex items-center hover:bg-indigo/10 transition-all duration-300 text-indigo rounded-full p-2"
+            className="flex items-center hover:bg-red/10 rounded-full text-red transition-all duration-300 p-1"
             onClick={onClose}
           >
             <X />
@@ -97,7 +97,7 @@ export default function FormUser({ onClose }: FormUserProps) {
                     id="fullNameUser"
                     placeholder="Ej: John Doe"
                     {...register("fullNameUser")}
-                    className="w-full pl-10 p-3 bg-transparent border-b border-negro/10 focus:border-verde focus:outline-none"
+                    className="w-full pl-10 p-3 bg-transparent border-b border-gray/20 focus:border-verde focus:outline-none"
                   />
                 </div>
                 {errors.fullNameUser && (
@@ -120,9 +120,9 @@ export default function FormUser({ onClose }: FormUserProps) {
                   <input
                     required
                     id="userName"
-                    placeholder="Ej: Nelson21"
+                    placeholder="Ej: JohnDoe21"
                     {...register("userName")}
-                    className="w-full pl-10 p-3 bg-transparent border-b border-negro/10 focus:border-verde focus:outline-none"
+                    className="w-full pl-10 p-3 bg-transparent border-b border-gray/20 focus:border-verde focus:outline-none"
                   />
                 </div>
                 {errors.userName && (
@@ -149,7 +149,7 @@ export default function FormUser({ onClose }: FormUserProps) {
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                     {...register("password")}
-                    className="w-full pl-10 pr-10 p-3 bg-transparent border-b border-negro/10 focus:border-verde focus:outline-none"
+                    className="w-full pl-10 pr-10 p-3 bg-transparent border-b border-gray/20 focus:border-verde focus:outline-none"
                   />
                   <button
                     type="button"
@@ -185,7 +185,7 @@ export default function FormUser({ onClose }: FormUserProps) {
                     required
                     id="rol"
                     {...register("rol")}
-                    className="w-full pl-10 p-3 bg-transparent border-b border-negro/10 focus:border-verde focus:outline-none"
+                    className="w-full pl-10 p-3 bg-transparent border-b border-gray/20 focus:border-verde focus:outline-none"
                   >
                     <option value="" disabled>Select a role</option>
                     <option value="admin">Admin</option>
@@ -200,10 +200,15 @@ export default function FormUser({ onClose }: FormUserProps) {
               </div>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-8 text-right">
+              <button
+                type="button"
+                className="px-6 py-2  text-blue border border-gray/20 mr-2  rounded-3xl   focus:outline-none focus:ring-2 focus:ring-  gray-300 font-bold"
+                onClick={onClose}
+              >Cancel</button>
               <button
                 type="submit"
-                className="w-full p-3 bg-indigo/80 hover:bg-indigo/90 text-white rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-300 font-bold"
+                className=" px-6 py-2 bg-blue hover:bg-blue/90 text-white  rounded-3xl   focus:outline-none focus:ring-2 focus:ring-  blue-300 font-bold"
               >
                 {isSubmitting ? "Loading..." : "Register"}
               </button>

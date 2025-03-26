@@ -5,12 +5,17 @@ import { prisma } from "@/src/lib/prisma";
 import { EmployeesType } from "@/types/employeesType";
 import { revalidatePath } from "next/cache";
 
+// funcion para obtener el nombre y el id del rol
+
 // funcion para obtener todos los empleados
 export async function getAllEmployees(): Promise<EmployeesType[]> {
-  const employees = await prisma.employee.findMany();
+  const employees = await prisma.employee.findMany({
+    include: {
+      role: true,
+    },
+  });
   return employees as EmployeesType[];
 }
-
 
 // funcion crear un empleado
 export async function createEmployee(data: EmployeeZodType) {
@@ -23,8 +28,6 @@ export async function createEmployee(data: EmployeeZodType) {
   }
 
   try {
-  
-
     const employeeExists = await prisma.employee.findFirst({
       where: {
         OR: [{ email: data.email }, { latamId: data.latamId }],
@@ -40,8 +43,6 @@ export async function createEmployee(data: EmployeeZodType) {
       };
     }
 
-
- 
     // iniciamos la creacion
     const newEmployee = await prisma.employee.create({
       data: {
@@ -52,8 +53,9 @@ export async function createEmployee(data: EmployeeZodType) {
         phone: data.phone,
         country: data.country,
         typeEmployee: data.typeEmployee,
+        roleId: data.role,
       },
-    })
+    });
 
     revalidatePath("/employees");
 
@@ -72,75 +74,60 @@ export async function createEmployee(data: EmployeeZodType) {
 }
 
 
-// función para actualizar empleado
-// export async function updateEmployee(
-//   employeeId: number,
-//   data: EmployeeUpdateZodType
-// ) {
-//   if (!data) {
-//     return {
-//       success: false,
-//       message: "No data provided",
-//     };
-//   }
+export async function updateEmployee(
+  employeeId: number,
+  data: EmployeeZodType
+) {
+  if (!data) {
+    return {
+      success: false,
+      message: "No data provided",
+    };
+  }
 
-//   try {
-//     // validamos el empleado para ver si exist
-//     const employeeExist = await prisma.employee.findUnique({
-//       where: { id: employeeId },
-//     });
-//     if (!employeeExist) {
-//       return {
-//         success: false,
-//         message: "Employee not found",
-//       };
-//     }
-//     // iniciamos la actualización
-//     const result = await prisma.$transaction(async (tx) => {
-//       // alctualizamos el rol
-//       const role = await tx.roles.update({
-//         where: { id: employeeExist.roleId },
-//         data: {
-//           jobRole: data.jobRole,
-//           country: data.country,
-//           area: data.area,
-//           cc: data.costCenter,
-//           cphCode: data.cphCode,
-//           cph: data.cph,
-//           currency: data.typeCurrency,
-//         },
-//       });
+  try {
+    // Verificamos si el empleado existe
+    const employeeExist = await prisma.employee.findUnique({
+      where: { id: employeeId },
+    });
 
-//       // actualizamos el empleado
-//       const employee = await tx.employee.update({
-//         where: { id: employeeId },
-//         data: {
-//           fullName: data.fullName,
-//           email: data.email,
-//           status: data.status,
-//           latamId: data.latamId,
-//           typeEmployee: data.typeEmployee,
-//           roleId: role.id,
-//         },
-//       });
-//       return { employee, role };
-//     });
+    if (!employeeExist) {
+      return {
+        success: false,
+        message: "Employee not found",
+      };
+    }
 
-//     revalidatePath("/employees");
-//     return {
-//       success: true,
-//       message: "Employee updated successfully",
-//       data: result,
-//     };
+    // Actualizamos el empleado
+    const updatedEmployee = await prisma.employee.update({
+      where: { id: employeeId },
+      data: {
+        fullName: data.fullName,
+        email: data.email,
+        status: data.status,
+        latamId: data.latamId,
+        phone: data.phone,
+        typeEmployee: data.typeEmployee,
+        country: data.country,
+        roleId: data.role,
+      },
+    });
 
-//   } catch (error) {
-//     console.log("error", error);
-//     return {
-//       success: false,
-//       message: "error updating employee",
-//     };
-//   }
-// }
+    revalidatePath("/employees");
+
+    return {
+      success: true,
+      message: "Employee updated successfully",
+      updatedEmployee,
+    };
+  } catch (error) {
+    console.error("Error updating employee:", error);
+    return {
+      success: false,
+      message: "Error updating employee",
+    };
+  }
+}
 
 // función para eliminar empleado
 export async function deleteEmployee(employeeId: number) {
@@ -164,20 +151,8 @@ export async function deleteEmployee(employeeId: number) {
       };
     }
 
-    // Eliminamos en transacción para mantener la integridad
-    await prisma.$transaction(async (tx) => {
-      // Primero eliminamos el empleado
-      await tx.employee.delete({
-        where: { id: employeeId },
-      });
-
-      // Eliminamos el rol asociado
-      if (employee.roleId) {
-        await tx.roles.delete({
-          where: { id: employee.roleId },
-        });
-      }
-
+    await prisma.employee.delete({
+      where: { id: employeeId },
     });
 
     revalidatePath("/employees");

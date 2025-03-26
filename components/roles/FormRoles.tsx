@@ -75,12 +75,12 @@ export default function FormRoles({
 
   return (
     <main className="bg-black/50 z-50 fixed top-0 left-0 right-0 w-full flex items-center justify-center h-screen">
-      <div className="bg-white rounded-2xl w-full max-w-5xl shadow-xl mx-auto p-10 animate-palpito">
+      <div className="bg-white    w-full max-w-5xl shadow-xl mx-auto p-10 animate-palpito">
         <section className="flex items-center justify-between">
           <Heading>New Roles Form</Heading>
 
           <button
-            className="flex items-center hover:bg-indigo/10 transition-all duration-300 text-indigo rounded-full p-2"
+            className="flex items-center hover:bg-  blue/10 transition-all duration-300 text-  blue    p-2"
             onClick={onClose}
           >
             <X />
@@ -246,9 +246,9 @@ export default function FormRoles({
                   <input
                     required
                     id="cph"
-                    type="number"
-                    placeholder="Ej: 45.5"
-                    {...register("cph", { valueAsNumber: true })}
+                    type="text" // Cambiado de "number" a "text"
+                    placeholder="Ej: 1.25"
+                    {...register("cph")}
                     className="w-full pl-10 p-3 bg-transparent border-b border-negro/10 focus:border-verde focus:outline-none"
                   />
                 </div>
@@ -279,9 +279,10 @@ export default function FormRoles({
                       Select a currency
                     </option>
                     {/* You can map over a list of currencies */}
-                    <option value="USD">USD</option>
+                    <option value="COP">COP</option>
                     <option value="EUR">EUR</option>
                     <option value="MXN">MXN</option>
+                    <option value="PUR">PUR</option>
                   </select>
                 </div>
                 {errors.currency && (
@@ -293,19 +294,20 @@ export default function FormRoles({
             <div className="mt-8">
               <button
                 type="submit"
-                className="w-full p-3 bg-indigo/80 hover:bg-indigo/90 text-white rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-300 font-bold"
+                className="w-full p-3 bg-  blue/80 hover:bg-  blue/90 text-white    focus:outline-none focus:ring-2 focus:ring-  blue-300 font-bold"
               >
                 {isSubmitting
                   ? "enviando"
                   : mode === "created"
-                  ? "crear cliente"
-                  : "actualizar cliente"}
+                    ? "crear cliente"
+                    : "actualizar cliente"}
               </button>
-              {/* <button 
-                    type="button" 
-                    onClick={onclose}>
+              <button
+                type="button"
+                onClick={onClose}
+              >
                 cerrar
-              </button> */}
+              </button>
             </div>
           </form>
         </section>

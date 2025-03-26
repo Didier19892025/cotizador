@@ -5,13 +5,14 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
     // Obtener la cookie con el token
     const token = request.cookies.get('token')?.value;
+    const rol = request.cookies.get('rol')?.value;
     const { pathname } = request.nextUrl;
     
     // Definimos las rutas públicas (accesibles sin token)
     const publicRoutes = ['/']; // Ruta de login es pública
     
     // Definimos las rutas protegidas (requieren token)
-    const protectedRoutes = ['/home', '/users', '/employees', '/employees/new', '/admin', '/roles'];
+    const protectedRoutes = ['/home', '/users', '/employees', '/roles', '/services', '/dashboard'];
     
     // Verificar si la ruta actual es una ruta protegida o subpágina de una ruta protegida
     const isProtectedRoute = protectedRoutes.some(route => 
@@ -23,6 +24,9 @@ export function middleware(request: NextRequest) {
         pathname === route || (route !== '/' && pathname.startsWith(route + '/'))
     );
     
+    // Verificar si está en el directorio dashboard
+    const isDashboardRoute = pathname === '/dashboard' || pathname.startsWith('/dashboard/');
+    
     // Si no tiene token y trata de acceder a ruta protegida
     if (isProtectedRoute && !token) {
         return NextResponse.redirect(new URL('/', request.url)); // Redirigir al login
@@ -30,7 +34,14 @@ export function middleware(request: NextRequest) {
     
     // Si tiene token y está en login
     if (pathname === '/' && token) {
-        return NextResponse.redirect(new URL('/home', request.url)); // Redirigir a /home si ya está logueado
+        // Redirigir según rol
+        const redirectUrl = rol === 'admin' ? '/home' : '/dashboard';
+        return NextResponse.redirect(new URL(redirectUrl, request.url));
+    }
+    
+    // Si tiene token pero no es admin e intenta acceder a rutas protegidas que NO son dashboard
+    if (token && rol !== 'admin' && isProtectedRoute && !isDashboardRoute) {
+        return NextResponse.redirect(new URL('/dashboard', request.url)); // Redirigir a dashboard
     }
     
     // Para rutas que no son ni públicas ni protegidas, redirigir a notFound
@@ -46,13 +57,6 @@ export function middleware(request: NextRequest) {
 export const config = {
     // Usar un matcher que incluya todas las rutas
     matcher: [
-        /*
-         * Match all request paths except for:
-         * - _next/static (static files)
-         * - _next/image (image optimization files)
-         * - favicon.ico (favicon file)
-         * - public files (assets)
-         */
         '/((?!_next/static|_next/image|favicon.ico|images/|public/).*)',
     ],
 };

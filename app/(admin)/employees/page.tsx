@@ -1,15 +1,17 @@
 import ListEmployees from "@/components/employees/ListEmployees";
 import { getAllEmployees } from "@/actions/employeesActions";
+import { getAllRoles } from "@/actions/rolesActions";
 
 
 
 export default async function EmployeesPage() {
-  const employee = await getAllEmployees()
+  const employees = await getAllEmployees()
+  const role = await getAllRoles()
+  console.log('empleados obtenidos',employees);
 
-  console.log('empleados obtenidos',employee);
   return (
     <>
-    <ListEmployees employee={employee}/>
+    <ListEmployees employees={employees} role={role}/>
     </>
   )
 }

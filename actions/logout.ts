@@ -1,25 +1,55 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { prisma } from "@/src/lib/prisma";
+import jwt from "jsonwebtoken";
 
 export async function logoutS() {
   try {
-    // Obtener el store de cookies
+    // Obtener el token de las cookies
+    const token = (await cookies()).get("token")?.value;
+
+    if (!token) {
+      return {
+        success: false,
+        message: "No hay sesión activa.",
+      };
+    }
+
+    // Decodificar el token para obtener el ID del usuario
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "secret") as { 
+      userId: number 
+    };
+
+    // Buscar el último registro de log sin hora de salida para este usuario
+    const lastLogEntry = await prisma.logUser.findFirst({
+      where: {
+        userId: decoded.userId,
+        logoutTime: null
+      },
+      orderBy: {
+        loginTime: 'desc'
+      }
+    });
+
+    // Si existe un registro sin hora de salida, actualizarlo
+    if (lastLogEntry) {
+      await prisma.logUser.update({
+        where: { id: lastLogEntry.id },
+        data: { logoutTime: new Date() }
+      });
+    }
+
+    // Eliminar las cookies
     const cookieStore = await cookies();
-    
-    // Eliminar la cookie del token
     cookieStore.delete("token");
     cookieStore.delete("fullNameUser");
-
-    // Opcional: redirigir al usuario a la página de inicio de sesión
+    cookieStore.delete("rol");
 
     return {
       success: true,
       message: "Logout successful.",
     };
-
-
-
   } catch (error) {
     console.error("Error during logout:", error);
     return {

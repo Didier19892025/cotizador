@@ -11,7 +11,7 @@ export default function AdminLayout({
 
       <Header />
       <div className="px-4">
-        <div className=" max-w-screen-2xl rounded-3xl mx-auto mt-4 bg-white p-4 pb-2">
+        <div className=" max-w-screen-xl mx-auto rounded-3xl   mt-4 bg-white p-4 max-h-[510px] overflow-auto">
 
           {children}
 

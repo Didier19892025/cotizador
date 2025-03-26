@@ -1,4 +1,3 @@
-// src/context/AuthContext.tsx
 "use client";
 
 import React, {
@@ -8,12 +7,12 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import { getCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next"; // Asegúrate de importar 'setCookie'
 
 // Define la estructura de los datos de usuario
 interface AuthUser {
-    fullNameUser: string;
-  // Puedes agregar más propiedades según necesites
+  fullNameUser: string;
+  rol: string;
 }
 
 interface AuthContextType {
@@ -26,7 +25,8 @@ interface AuthContextType {
 
 // Valores por defecto
 const defaultUser: AuthUser = {
-    fullNameUser: "Invitado",
+  fullNameUser: "Invitado",
+  rol: "Invitado",
 };
 
 // Crear el contexto
@@ -50,10 +50,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const initializeAuth = async () => {
       try {
         const fullNameUser = await getCookie("fullNameUser");
+        const rol = await getCookie("rol");
 
         if (fullNameUser) {
           setUser({
             fullNameUser: String(fullNameUser),
+            rol: String(rol || "Invitado"),
           });
         }
       } catch (error) {
@@ -68,9 +70,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Función para cerrar sesión
   const logout = async () => {
-    // Puedes mantener tu lógica actual de cerrarSesion()
-    // y simplemente actualizar el estado del contexto después
+    // Borra las cookies de autenticación y restablece el estado
+    setCookie("fullNameUser", "", { maxAge: -1 });
+    setCookie("rol", "", { maxAge: -1 });
+
     setUser(defaultUser);
+  };
+
+  // Actualiza el usuario en el contexto
+  const updateUser = (userData: AuthUser) => {
+    // Actualiza el estado de user
+    setUser(userData);
+
+    // Guarda los valores en las cookies para persistencia
+    setCookie("fullNameUser", userData.fullNameUser, { maxAge: 8 * 60 * 60 }); // 8 horas
+    setCookie("rol", userData.rol, { maxAge: 8 * 60 * 60 });
   };
 
   return (
@@ -79,7 +93,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         user,
         isAuthenticated: user.fullNameUser !== "Invitado",
         isLoading,
-        setUser,
+        setUser: updateUser,
         logout,
       }}
     >

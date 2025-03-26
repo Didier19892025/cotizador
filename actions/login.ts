@@ -5,7 +5,6 @@ import jwt from "jsonwebtoken";
 import { prisma } from "@/src/lib/prisma";
 import { cookies } from "next/headers";
 import { loginType } from "@/schemas/zodLogin";
-import { revalidatePath } from "next/cache";
 
 export async function login(data: loginType) {
   if (!data) {
@@ -45,10 +44,12 @@ export async function login(data: loginType) {
       };
     }
 
+    // Crear el token JWT con el rol incluido
     const token = jwt.sign(
       {
         userId: userFound.id,
         fullNameUser: userFound.fullNameUser,
+        role: userFound.rol,  // Incluimos el rol aquí
       },
       process.env.JWT_SECRET || "secret",
       { expiresIn: "8h" } // Aumentamos el tiempo para mejor experiencia de usuario
@@ -63,6 +64,7 @@ export async function login(data: loginType) {
       sameSite: "lax", // Importante para que funcione con redirecciones
     });
 
+    // Guardamos el nombre del usuario en una cookie (si es necesario)
     (await cookies()).set("fullNameUser", userFound.fullNameUser, {
       httpOnly: false,
       secure: process.env.NODE_ENV === "production", // Solo https en producción
@@ -71,7 +73,24 @@ export async function login(data: loginType) {
       sameSite: "lax", // Importante para que funcione con redirecciones
     });
 
-    revalidatePath('/')  
+    // Si prefieres guardar el rol en una cookie, puedes hacerlo aquí también
+    (await cookies()).set("rol", userFound.rol, {
+      httpOnly: false,  // Lo dejamos en falso si deseas acceder al rol en el cliente
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      maxAge: 8 * 60 * 60, // 8 horas en segundos
+      sameSite: "lax",
+    });
+
+    if(userFound){
+      await prisma.logUser.create({
+        data: {
+          userId: userFound.id,
+          loginTime: new Date(),
+        },
+      })
+    }
+
 
     return {
       success: true,

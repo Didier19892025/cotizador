@@ -58,7 +58,13 @@ export async function createUser(data: UserSchemaType) {
 
 
 export async function getAllUsers(): Promise<UserType[]> {
-    const users = await prisma.user.findMany();
+    const users = await prisma.user.findMany({
+        include: {
+            logUser: true,
+        },
+        orderBy: { fullNameUser: "desc" },
+    });
+
     return users as UserType[];
 }
 

@@ -9,4 +9,14 @@ export interface UserType{
     rol: UserRole;
     createdAt: Date;
     updatedAt: Date;
+    logUser: LogUserType[];
+}
+
+export interface LogUserType {
+    id: number;
+    userId: number;
+    loginTime: Date;
+    logoutTime: Date;   
+    createdAt: Date;
+    updatedAt: Date;
 }

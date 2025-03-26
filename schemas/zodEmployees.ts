@@ -33,7 +33,15 @@ export const EmployeeZod = z.object({
 
 
   country: z.nativeEnum(Country, { message: "Invalid country" }),
-  phone: z.string().min(1, "Phone is required")
+  phone: z.string().min(1, "Phone is required"),
+
+  // Agregar validación para el campo 'role'
+  role: z
+    .number()
+    .min(1, "Role is required") // Valida que se haya seleccionado un rol válido
+    .refine(value => value > 0, {
+      message: "Please select a valid role",
+    }),
   
 });
 

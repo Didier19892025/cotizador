@@ -4,7 +4,6 @@ import { JobSchemaType } from "@/schemas/zodRoles";
 import { prisma } from "@/src/lib/prisma";
 import { RoleType } from "@/types/rolesType";
 import { revalidatePath } from "next/cache";
-import { date } from "zod";
 
 // function createRole
 export async function createRole(data: JobSchemaType) {
@@ -84,7 +83,7 @@ export async function deleteRole(id: number) {
     await prisma.role.delete({
       where: { id },
     });
-
+    
     revalidatePath("/roles");
     return {
       success: true,
@@ -104,7 +103,7 @@ export async function editRol(id: number, data: JobSchemaType) {
   if (!data || !id)
     return {
       success: false,
-      message: "No se recibieron los datos",
+      message: "No data received",
     };
   try {
     const role = await prisma.role.findUnique({
@@ -113,7 +112,7 @@ export async function editRol(id: number, data: JobSchemaType) {
     if (!role) {
       return {
         success: false,
-        message: "no se encontro el role para actualizar",
+        message: "Role not found for update",
       };
     }
     const roleUpdate = await prisma.role.update({
@@ -121,17 +120,20 @@ export async function editRol(id: number, data: JobSchemaType) {
       data: data,
     });
 
-    return{
+    revalidatePath('roles')
+
+    return {
       success: true,
-      message: "Rol actualizado",
-      data: roleUpdate
+      message: "Role updated successfully",
+      data: roleUpdate,
     };
 
   } catch (error) {
     console.error(error);
     return {
       success: false,
-      message: "ocurrio un error",
+      message: "An error occurred",
     };
   }
 }
+

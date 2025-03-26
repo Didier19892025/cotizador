@@ -1,4 +1,5 @@
 import { Country } from "@prisma/client";
+import { RoleType } from "./rolesType";
 
 export interface EmployeesType {
   id: number;
@@ -8,10 +9,9 @@ export interface EmployeesType {
   latamId: string;
   phone: string;
   typeEmployee: string;
-  roleId: number;
   country: Country;
   createdAt: Date;
   updatedAt: Date;
+  role: RoleType; // Changed from RoleType[] to RoleType
+  roleId: number; // Add this field to match the Prisma model
 }
-
-

@@ -9,29 +9,23 @@ import NoRecords from "@/src/ui/NoRecords";
 import Swal from "sweetalert2";
 import { deleteRole } from "@/actions/rolesActions";
 import ModalRolesDetail from "./ModalRolesDetail";
+import { ModalState } from "@/types/modalTypes";
+import { formatCurrency } from "@/src/utils/formatCurrency";
 
 interface RolesListProps {
   roles: RoleType[];
-  onRolesUpdate? : () => void;
+  onRolesUpdate?: () => void;
 }
 
 export default function RolesList({ roles }: RolesListProps) {
-  const [selectedRoleId, setSelectedRoleId] = useState<number | undefined>(
-    undefined
-  );
+  const [modalState, setModalState] = useState<ModalState>({ type: 'none' });
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModalOpenDetail, setIsModalDetailOpen] = useState(false);
-  const [isFormOpenEdit, setIsModalOpenEdit] = useState(false);
-  const handleOpenFormEdit = () => setIsModalOpenEdit(true);
-  const handleOpenModal = () => setIsModalOpen(true);
-  const handleOpenModalDetail = (roleId: number) => {
-    setIsModalDetailOpen(true);
-    setSelectedRoleId(roleId);
-  };
+  // Funciones para manejar la apertura y cierre de modales
+  const openCreateModal = () => setModalState({ type: 'create' });
+  const openEditModal = (role: RoleType) => setModalState({ type: 'edit', data: role });
+  const openDetailModal = (roleId: number) => setModalState({ type: 'detail', data: roleId });
+  const closeModal = () => setModalState({ type: 'none' });
 
-  const handleCloseModal = () => setIsModalOpen(false);
-  const handleCloseModalDetail = () => setIsModalDetailOpen(false);
 
   const handleDeleteRole = async (id: number, jobRole: string) => {
     // Mostrar el modal de confirmación
@@ -80,11 +74,11 @@ export default function RolesList({ roles }: RolesListProps) {
       <main>
         {/* Header section */}
         <section className="flex items-center justify-between">
-          <Heading>Roles List</Heading>
+          <Heading> Manage Roles</Heading>
 
           <button
-            className="flex items-center bg-indigo/70 hover:bg-indigo/80 transition-all duration-300 ease-out text-white rounded-2xl py-2 px-4"
-            onClick={handleOpenModal}
+            className="flex items-center bg-blue hover:bg-blue/80 rounded-3xl transition-all duration-300 ease-out text-white py-1 px-4"
+            onClick={openCreateModal}
           >
             <Plus />
             New Roles
@@ -94,30 +88,30 @@ export default function RolesList({ roles }: RolesListProps) {
         {/* Roles section */}
         <section className="mt-4">
           {roles.length > 0 ? (
-            <div className="border-gray/20 max-h-[430px] overflow-hidden rounded-2xl">
+            <div className="border-gray/20 max-h-[430px] overflow-hidden   ">
               <div className="overflow-y-auto h-full">
                 <table className="w-full">
-                  <thead className="bg-gray text-white sticky top-0 z-10">
+                  <thead className="bg-blue text-white">
                     <tr>
-                      <th className="w-1/12 px-4 py-2 text-left text-sm font-semibold text-gray-700">
+                      <th className=" px-4 py-2 text-left text-sm font-semibold rounded-s-3xl">
                         <strong>#</strong>
                       </th>
-                      <th className="w-1/6 px-4 py-2 text-left text-sm font-semibold text-gray-700">
+                      <th className=" px-4 py-2 text-left text-sm font-semibold ">
                         JobRole
                       </th>
-                      <th className="w-1/6 px-4 py-2 text-left text-sm font-semibold text-gray-700">
+                      <th className=" px-4 py-2 text-left text-sm font-semibold ">
                         Country
                       </th>
-                      <th className="w-1/6 px-4 py-2 text-left text-sm font-semibold text-gray-700">
+                      <th className=" px-4 py-2 text-left text-sm font-semibold ">
                         Center Cost
                       </th>
-                      <th className="w-1/6 px-4 py-2 text-left text-sm font-semibold text-gray-700">
+                      <th className=" px-4 py-2 text-left text-sm font-semibold ">
                         Cph Code
                       </th>
-                      <th className="w-1/6 px-4 py-2 text-left text-sm font-semibold text-gray-700">
+                      <th className=" px-4 py-2 text-left text-sm font-semibold ">
                         Cph
                       </th>
-                      <th className="px-4 py-2 text-right ml-4 text-sm font-semibold text-gray-700">
+                      <th className="px-4 py-2 text-right ml-4 text-sm font-semibold rounded-e-3xl">
                         Actions
                       </th>
                     </tr>
@@ -126,49 +120,49 @@ export default function RolesList({ roles }: RolesListProps) {
                     {roles.map((role, index) => (
                       <tr
                         key={role.id}
-                        className="border-b last:border-none border-gray/20"
+                        className="border-b last:border-none border-gray/10"
                       >
-                        <td className="px-4 py-2 text-left text-sm font-semibold text-gray-700">
-                          {index + 1}
+                        <td className="px-1 text-left text-sm font-semibold">
+                          <span className="bg-blue px-3 py-1 rounded-full text-white">{index + 1}</span>
+
                         </td>
-                        <td className="px-4 py-2 text-left text-sm font-semibold text-gray-700">
+                        <td className="px-4 py-2 text-left">
                           {role.jobRole}
                         </td>
-                        <td className="px-4 py-2 text-left text-sm font-semibold text-gray-700">
+                        <td className="px-4 py-2 text-left  ">
                           {role.country}
                         </td>
-                        <td className="px-4 py-2 text-left text-sm font-semibold text-gray-700">
+                        <td className="px-4 py-2 text-left  ">
                           {role.cc}
                         </td>
-                        <td className="px-4 py-2 text-left text-sm font-semibold text-gray-700">
+                        <td className="px-4 py-2 text-left  ">
                           {role.cphCode}
                         </td>
-                        <td className="px-4 py-2 text-left text-sm font-semibold text-gray-700">
-                          {role.cph}
+                        <td className="px-4 py-2 text-left  ">
+                          <span className="text-green">$</span>{" "}{formatCurrency(role.cph)}
                         </td>
                         <td className="py-2 text-right text-sm font-semibold">
                           <div className="relative group flex justify-end ">
-                            <div className="hover:bg-gray/10 w-7 h-7 rounded-full flex items-center justify-center cursor-pointer">
+                            <div className="hover:bg-green/10  rounded-full p-1 text-green  flex items-center justify-center cursor-pointer">
                               <GripVertical size={18} />
                             </div>
-                            <div className="absolute right-6 flex  bottom-0 p-2 bg-white shadow-xl border border-gray/40 rounded-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
+                            <div className="absolute right-6 bottom-0 p-2 bg-white shadow-xl  rounded-3xl  opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
+
                               <button
-                                onClick={() => handleOpenModalDetail(role.id)}
-                                className="hover:bg-gray/10 transition-all duration-300 ease-out text-white rounded-full p-2"
+                                onClick={() => openDetailModal(role.id)}
+                                className="hover:bg-green/10 transition-all duration-300 ease-out rounded-full p-2"
                               >
-                                <CircleAlert size={18} className="text-gray" />
+                                <CircleAlert size={18} className="text-green" />
                               </button>
                               <button
-                                onClick={handleOpenFormEdit}
-                                className="hover:bg-indigo/10 transition-all duration-300 ease-out text-white rounded-full p-2"
+                                onClick={() => openEditModal(role)}
+                                className="hover:bg-green/10 transition-all duration-300 ease-out rounded-full   p-2"
                               >
-                                <Pencil size={18} className="text-indigo" />
+                                <Pencil size={18} className="text-blue" />
                               </button>
                               <button
-                                onClick={() =>
-                                  handleDeleteRole(role.id, role.jobRole)
-                                }
-                                className="hover:bg-red/10 transition-all duration-300 ease-out text-white rounded-full p-2"
+                                onClick={() => handleDeleteRole(role.id, role.jobRole)}
+                                className="hover:bg-red/10 transition-all duration-300 ease-out rounded-full   p-2"
                               >
                                 <Trash2 size={18} className="text-red" />
                               </button>
@@ -187,18 +181,23 @@ export default function RolesList({ roles }: RolesListProps) {
         </section>
       </main>
 
-      {isModalOpen && <FormRoles onClose={handleCloseModal} />}
-      {isFormOpenEdit && <FormRoles 
-        roles={roles}
-        modeEdit="edit"
-        onClose={handleCloseModal} />}
-      {isModalOpenDetail && (
+      {/* Renderizado condicional de modales basado en el estado */}
+      {modalState.type === 'create' &&
+        <FormRoles onClose={closeModal} />}
+
+      {modalState.type === 'edit' &&
+        <FormRoles
+          roles={modalState.data as RoleType}
+          mode="edit"
+          onClose={closeModal}
+        />}
+
+      {modalState.type === 'detail' &&
         <ModalRolesDetail
           roles={roles}
-          onClose={handleCloseModalDetail}
-          selectedRoleId={selectedRoleId}
-        />
-      )}
+          onClose={closeModal}
+          selectedRoleId={modalState.data as number}
+        />}
     </>
   );
 }

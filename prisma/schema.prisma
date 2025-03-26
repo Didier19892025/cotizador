@@ -20,8 +20,6 @@ model Employee {
   country      Country
   roleId       Int
   role         Role     @relation(fields: [roleId], references: [id])
-
-  @@index([roleId], map: "Employee_roleId_fkey")
 }
 
 model Role {
@@ -32,7 +30,8 @@ model Role {
   cc        String
   cphCode   String
   cph       Float
-  currency  CurrencyType
+  currencyId  Int
+  currency   Currency    @relation(fields: [currencyId], references: [id])
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
   employee  Employee[]
@@ -45,9 +44,22 @@ model User {
   userName     String   @unique
   password     String
   rol          UserRole
+  logUser      LogUser[]
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
+
+// Tabla de registro de ingresos y salidas del sistema de cada usuario
+model LogUser {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  user         User     @relation(fields: [userId], references: [id])
+  loginTime    DateTime @default(now())  // Hora de ingreso
+  logoutTime   DateTime? // Hora de salida, nullable (si el usuario aún no ha salido, puede ser nula)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
 
 model ServiceCPH {
   id             Int       @id @default(autoincrement())
@@ -57,8 +69,6 @@ model ServiceCPH {
   updatedAt      DateTime  @updatedAt
   tecnologyId    Int
   tecnology      Tecnology @relation(fields: [tecnologyId], references: [id])
-
-  @@index([tecnologyId], map: "ServiceCPH_tecnologyId_fkey")
 }
 
 model ServicesCpa {
@@ -69,8 +79,6 @@ model ServicesCpa {
   updatedAt      DateTime  @updatedAt
   tecnologyId    Int
   tecnology      Tecnology @relation(fields: [tecnologyId], references: [id])
-
-  @@index([tecnologyId], map: "ServicesCpa_tecnologyId_fkey")
 }
 
 model TicketCpa {
@@ -81,8 +89,6 @@ model TicketCpa {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   tecnology   Tecnology @relation(fields: [TecnologyId], references: [id])
-
-  @@index([TecnologyId], map: "TicketCpa_TecnologyId_fkey")
 }
 
 model Tecnology {
@@ -106,8 +112,6 @@ model Product {
   typeProduct           String
   tecnology             Tecnology @relation(fields: [tecnologyId], references: [id])
   project               Project[]
-
-  @@index([tecnologyId], map: "Product_tecnologyId_fkey")
 }
 
 model Project {
@@ -115,20 +119,51 @@ model Project {
   country      Country
   typeProject  String
   costTicked   Float
-  currencyType CurrencyType
-  serviceEnum  ServiceEnum
+  currencyId Int
+  currency    Currency    @relation(fields: [currencyId], references: [id])
   roleId       Int
-  productsId   Int
+  productId    Int
+  clientId     Int
+  client       Client      @relation(fields: [clientId], references: [id])
+  service      Service[]
   tecnologyId  Int
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
-  products     Product      @relation(fields: [productsId], references: [id])
+  products     Product      @relation(fields: [productId], references: [id])
   roles        Role         @relation(fields: [roleId], references: [id])
   tecnology    Tecnology    @relation(fields: [tecnologyId], references: [id])
+}
 
-  @@index([productsId], map: "Project_productsId_fkey")
-  @@index([roleId], map: "Project_roleId_fkey")
-  @@index([tecnologyId], map: "Project_tecnologyId_fkey")
+model Service {
+  id          Int          @id @default(autoincrement())
+  nameService String
+  status      Boolean
+  projectId   Int?
+  project     Project?     @relation(fields: [projectId], references: [id])
+  subServices SubService[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model SubService {
+  id              Int              @id @default(autoincrement())
+  nameSubService  String
+  status          Boolean
+  serviceId       Int
+  service         Service          @relation(fields: [serviceId], references: [id])
+  itemSubServices ItemSubService[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+}
+
+model ItemSubService {
+  id                 Int        @id @default(autoincrement())
+  nameItemSubService String
+  status             Boolean
+  subServiceId       Int
+  subService         SubService @relation(fields: [subServiceId], references: [id])
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
 }
 
 enum Country {
@@ -137,18 +172,9 @@ enum Country {
   Chile
   Mexico
   Argentina
-  Uruguay
   Panama
   United_States
-  Bolivia
   Brasil
-  Ecuador
-  Guatemala
-  Honduras
-  Nicaragua
-  Puerto_Rico
-  Saint_Lucia
-  Venezuela
 }
 
 enum UserRole {
@@ -156,28 +182,24 @@ enum UserRole {
   user
 }
 
-enum CurrencyType {
-  USD
-  COP
-  PEN
-  CLP
-  MXN
-  ARS
-  UYU
-  PAB
-  BRL
-  EUR
-  GTQ
-  HNL
-  NIO
-  XDC
-  VEF
+model Currency {
+  id        Int      @id @default(autoincrement())
+  code      String
+  name      String
+  rate Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  roles  Role[]
+  project Project[]
 }
 
-enum ServiceEnum {
-  Planning
-  Desing
-  Implementation
-  Operation
-  Optimization
+model Client {
+  id           Int      @id @default(autoincrement())
+  fullName     String
+  email        String   @unique
+  phone        String
+  country      Country
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  project      Project[]
 }

@@ -10,7 +10,7 @@ export const JobSchema = z.object({
     area: z.string().min(1, { message: 'Area is required' }),
     cc: z.string().min(1, { message: 'CC is required' }),
     cphCode: z.string().min(1, { message: 'CPH code is required' }),
-    cph: z.number().positive({ message: 'CPH must be a positive number' }),
+    cph: z.coerce.number().positive({ message: 'CPH must be a positive number' }),
     currency: z.nativeEnum(CurrencyType, { message: 'Currency must be a valid currency' }),
   });
   
