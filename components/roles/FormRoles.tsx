@@ -6,14 +6,18 @@ import Heading from "@/src/ui/Heading";
 import { JobSchema, JobSchemaType } from "@/schemas/zodRoles";
 import { countries } from "@/data/countries";
 import { createRole, editRol } from "@/actions/rolesActions";
+import { currencyType } from "@/types/currencysType";
+import { capitalizeName, toUpperCaseName } from "@/src/utils/formatName";
 
 interface FormRolesProps {
   onClose: () => void;
   roles?: JobSchemaType;
   mode?: "created" | "edit";
+  currencies?: currencyType[];
 }
 
 export default function FormRoles({
+  currencies,
   onClose,
   roles,
   mode = "created",
@@ -30,6 +34,7 @@ export default function FormRoles({
   });
 
   const onSubmit = async (data: JobSchemaType) => {
+    console.log("onSubmit", data);
     try {
       let result;
       if (mode === "created") {
@@ -74,13 +79,14 @@ export default function FormRoles({
   };
 
   return (
-    <main className="bg-black/50 z-50 fixed top-0 left-0 right-0 w-full flex items-center justify-center h-screen">
-      <div className="bg-white    w-full max-w-5xl shadow-xl mx-auto p-10 animate-palpito">
+    <main className="bg-blue/20 backdrop-blur-sm z-50 fixed top-0 left-0 right-0 w-full flex items-center justify-center h-screen">
+      <div className="bg-white rounded-3xl   w-full max-w-5xl shadow-xl mx-auto p-4 animate-palpito">
         <section className="flex items-center justify-between">
-          <Heading>New Roles Form</Heading>
+          {mode === 'created' ? <Heading>New Roles Form</Heading> : <Heading>Edit Roles Form</Heading>}
+          
 
           <button
-            className="flex items-center hover:bg-  blue/10 transition-all duration-300 text-  blue    p-2"
+            className="flex items-center hover:bg-red/10 rounded-full text-red    p-1"
             onClick={onClose}
           >
             <X />
@@ -89,20 +95,14 @@ export default function FormRoles({
 
         {/* Form */}
         <section className="mt-4">
-          <div>
-            <h2>
-              {mode === "created"
-                ? "formulario para crear rol"
-                : "editar formulario"}
-            </h2>
-          </div>
+          
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="grid grid-cols-2 gap-4">
               {/* Job Role */}
               <div className="space-y-2">
                 <label
                   htmlFor="jobRole"
-                  className="block text-sm font-medium text-negro"
+                  className="block  "
                 >
                   Job Role
                 </label>
@@ -115,7 +115,7 @@ export default function FormRoles({
                     id="jobRole"
                     placeholder="Ej: Software Engineer"
                     {...register("jobRole")}
-                    className="w-full pl-10 p-3 bg-transparent border-b border-negro/10 focus:border-verde focus:outline-none"
+                    className="w-full pl-10 p-3 bg-transparent border-b border-gray/20 focus:border-blue/20 focus:outline-none"
                   />
                 </div>
                 {errors.jobRole && (
@@ -139,7 +139,7 @@ export default function FormRoles({
                     required
                     id="country"
                     {...register("country")}
-                    className="w-full pl-10 p-3 bg-transparent border-b border-negro/10 focus:border-verde focus:outline-none"
+                    className="w-full pl-10 p-3 bg-transparent border-b border-gray/20 focus:border-blue/20 focus:outline-none"
                   >
                     <option value="" disabled>
                       Select a country
@@ -173,7 +173,8 @@ export default function FormRoles({
                     id="area"
                     placeholder="Ej: Development"
                     {...register("area")}
-                    className="w-full pl-10 p-3 bg-transparent border-b border-negro/10 focus:border-verde focus:outline-none"
+                    className="w-full pl-10 p-3 bg-transparent border-b border-gray/20 focus:border-blue/20 focus:outline-none"
+
                   />
                 </div>
                 {errors.area && (
@@ -187,7 +188,7 @@ export default function FormRoles({
                   htmlFor="cc"
                   className="block text-sm font-medium text-negro"
                 >
-                  CC
+                  Cost center
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -198,7 +199,8 @@ export default function FormRoles({
                     id="cc"
                     placeholder="Ej: CC12345"
                     {...register("cc")}
-                    className="w-full pl-10 p-3 bg-transparent border-b border-negro/10 focus:border-verde focus:outline-none"
+                    className="w-full pl-10 p-3 bg-transparent border-b border-gray/20 focus:border-blue/20 focus:outline-none"
+
                   />
                 </div>
                 {errors.cc && (
@@ -223,7 +225,8 @@ export default function FormRoles({
                     id="cphCode"
                     placeholder="Ej: CPH98765"
                     {...register("cphCode")}
-                    className="w-full pl-10 p-3 bg-transparent border-b border-negro/10 focus:border-verde focus:outline-none"
+                    className="w-full pl-10 p-3 bg-transparent border-b border-gray/20 focus:border-blue/20 focus:outline-none"
+
                   />
                 </div>
                 {errors.cphCode && (
@@ -248,8 +251,9 @@ export default function FormRoles({
                     id="cph"
                     type="text" // Cambiado de "number" a "text"
                     placeholder="Ej: 1.25"
-                    {...register("cph")}
-                    className="w-full pl-10 p-3 bg-transparent border-b border-negro/10 focus:border-verde focus:outline-none"
+                    {...register("cph", { valueAsNumber: true })}
+                    className="w-full pl-10 p-3 bg-transparent border-b border-gray/20 focus:border-blue/20 focus:outline-none"
+
                   />
                 </div>
                 {errors.cph && (
@@ -272,42 +276,39 @@ export default function FormRoles({
                   <select
                     required
                     id="currency"
-                    {...register("currency")}
-                    className="w-full pl-10 p-3 bg-transparent border-b border-negro/10 focus:border-verde focus:outline-none"
+                    {...register("currencyId", { valueAsNumber: true })}
+                    className="w-full pl-10 p-3 bg-transparent border-b border-gray/20 focus:border-blue/20 focus:outline-none"
+
                   >
                     <option value="" disabled>
                       Select a currency
                     </option>
-                    {/* You can map over a list of currencies */}
-                    <option value="COP">COP</option>
-                    <option value="EUR">EUR</option>
-                    <option value="MXN">MXN</option>
-                    <option value="PUR">PUR</option>
+                    
+                    {currencies.map((cur) => (
+                      <option key={cur.id} value={cur.id}>
+                        {capitalizeName(cur.name)} {'-'} ({toUpperCaseName(cur.code)})
+                      </option>
+                    ))}
                   </select>
                 </div>
-                {errors.currency && (
-                  <p className="text-red text-sm">{errors.currency.message}</p>
+                {errors.currencyId && (
+                  <p className="text-red text-sm">{errors.currencyId.message}</p>
                 )}
               </div>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-8 text-right">
               <button
                 type="submit"
-                className="w-full p-3 bg-  blue/80 hover:bg-  blue/90 text-white    focus:outline-none focus:ring-2 focus:ring-  blue-300 font-bold"
+                className="w-2/12 py-2 px-1 bg-blue/80 hover:bg-blue/90 text-white  rounded-3xl  focus:outline-none focus:ring-2 focus:ring-  blue-300 font-bold"
               >
                 {isSubmitting
-                  ? "enviando"
+                  ? "Send..."
                   : mode === "created"
-                    ? "crear cliente"
-                    : "actualizar cliente"}
+                    ? "Created client"
+                    : "Update client"}
               </button>
-              <button
-                type="button"
-                onClick={onClose}
-              >
-                cerrar
-              </button>
+    
             </div>
           </form>
         </section>

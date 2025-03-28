@@ -2,8 +2,16 @@
 
 import { JobSchemaType } from "@/schemas/zodRoles";
 import { prisma } from "@/src/lib/prisma";
+import { currencyType } from "@/types/currencysType";
 import { RoleType } from "@/types/rolesType";
 import { revalidatePath } from "next/cache";
+
+// funcion para optener los currencys
+
+export async function getAllCurrencies(): Promise<currencyType[]> {
+  const currencies = await prisma.currency.findMany();
+  return currencies as currencyType[];
+}
 
 // function createRole
 export async function createRole(data: JobSchemaType) {
@@ -40,6 +48,7 @@ export async function getAllRoles(): Promise<RoleType[]> {
     include: {
       employee: true,
       project: true,
+      currency: true,
     },
   });
   return roles as RoleType[];
@@ -83,7 +92,7 @@ export async function deleteRole(id: number) {
     await prisma.role.delete({
       where: { id },
     });
-    
+
     revalidatePath("/roles");
     return {
       success: true,
@@ -120,14 +129,13 @@ export async function editRol(id: number, data: JobSchemaType) {
       data: data,
     });
 
-    revalidatePath('roles')
+    revalidatePath("roles");
 
     return {
       success: true,
       message: "Role updated successfully",
       data: roleUpdate,
     };
-
   } catch (error) {
     console.error(error);
     return {
@@ -136,4 +144,3 @@ export async function editRol(id: number, data: JobSchemaType) {
     };
   }
 }
-

@@ -1,4 +1,4 @@
-import { Country, CurrencyType, ServiceEnum } from "@prisma/client";
+import { Country } from "@prisma/client";
 
 export interface RoleType {
   id: number;
@@ -8,33 +8,41 @@ export interface RoleType {
   cc: string;
   cphCode: string;
   cph: number;
-  currency: CurrencyType;
+  currencyId: number;
+  currency: {
+    id: number;
+    code: string;
+    name: string;
+    rate: number;
+    createdAt: Date;
+    updatedAt: Date;
+  };
   createdAt: Date;
   updatedAt: Date;
-  employee: employeesType[];
-  project: ProjectType[];
-}
-
-export interface ProjectType {
-  id: number;
-  country: Country;
-  typeProject: string;
-  costTicked: number;
-  currencyType: CurrencyType;
-  serviceEnum: ServiceEnum;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface employeesType {
-  id: number;
-  fullName: string;
-  email: string;
-  status: boolean;
-  phone: string;
-  latamId: string;
-  typeEmployee: string;
-  createdAt: Date;
-  updatedAt: Date;
-  country: Country;
+  employee: {
+    id: number;
+    fullName: string;
+    email: string;
+    status: boolean;
+    phone: string;
+    latamId: string;
+    typeEmployee: string;
+    createdAt: Date;
+    updatedAt: Date;
+    country: Country;
+    roleId: number;
+  }[];
+  project: {
+    id: number;
+    country: Country;
+    typeProject: string;
+    costTicked: number;
+    currencyId: number;
+    roleId: number;
+    productId: number;
+    clientId: number;
+    tecnologyId: number;
+    createdAt: Date;
+    updatedAt: Date;
+  }[];
 }

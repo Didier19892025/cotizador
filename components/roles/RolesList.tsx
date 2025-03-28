@@ -11,13 +11,17 @@ import { deleteRole } from "@/actions/rolesActions";
 import ModalRolesDetail from "./ModalRolesDetail";
 import { ModalState } from "@/types/modalTypes";
 import { formatCurrency } from "@/src/utils/formatCurrency";
+import { currencyType } from "@/types/currencysType";
+import { capitalizeName } from "@/src/utils/formatName";
 
 interface RolesListProps {
   roles: RoleType[];
+  currencies: currencyType[];
   onRolesUpdate?: () => void;
 }
 
-export default function RolesList({ roles }: RolesListProps) {
+export default function RolesList({ roles, currencies }: RolesListProps) {
+  
   const [modalState, setModalState] = useState<ModalState>({ type: 'none' });
 
   // Funciones para manejar la apertura y cierre de modales
@@ -127,10 +131,10 @@ export default function RolesList({ roles }: RolesListProps) {
 
                         </td>
                         <td className="px-4 py-2 text-left">
-                          {role.jobRole}
+                          {capitalizeName(role.jobRole)}
                         </td>
                         <td className="px-4 py-2 text-left  ">
-                          {role.country}
+                          {capitalizeName(role.country)}
                         </td>
                         <td className="px-4 py-2 text-left  ">
                           {role.cc}
@@ -183,11 +187,11 @@ export default function RolesList({ roles }: RolesListProps) {
 
       {/* Renderizado condicional de modales basado en el estado */}
       {modalState.type === 'create' &&
-        <FormRoles onClose={closeModal} />}
+        <FormRoles onClose={closeModal} currencies={currencies}/>}
 
       {modalState.type === 'edit' &&
         <FormRoles
-          roles={modalState.data as RoleType}
+        currencies={currencies}
           mode="edit"
           onClose={closeModal}
         />}

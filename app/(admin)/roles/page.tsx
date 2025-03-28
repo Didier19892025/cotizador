@@ -1,12 +1,13 @@
-import { getAllRoles } from "@/actions/rolesActions";
+import { getAllCurrencies, getAllRoles } from "@/actions/rolesActions";
 import RolesList from "@/components/roles/RolesList";
 
 
 export default async function  RolesPage() {
   const roles = await getAllRoles()
-  // console.log('roles obtenidos',roles.map(role => role.project.map(pro) => pro);
+  const currencies = await getAllCurrencies()
+  console.log('roles obtenidos',roles);
   return (
     
-    <RolesList roles={roles}/>
+    <RolesList roles={roles} currencies={currencies}/>
   )
 }
