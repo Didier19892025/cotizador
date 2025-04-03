@@ -46,14 +46,18 @@ const FormProjects: React.FC<FormProjectsProps> = ({ services, roles }) => {
             client.email.toLowerCase().includes(clientSearchTerm.toLowerCase())
     );
 
-    const filteredRoles = roles.filter(
+    const filteredRoles = roles
+    .filter(
         (role) =>
             role.jobRole.toLowerCase().includes(clientSearchTerm.toLowerCase()) ||
             role.cphCode.toLowerCase().includes(clientSearchTerm.toLowerCase())
     )
+    .map(role => ({
+        id: role.id,
+        jobRole: role.jobRole
+    }));
 
-    console.log('roles filtrados',filteredRoles)
-
+console.log('roles filtrados', filteredRoles);
     // Manejador para crear la cotización
     const handleCreateQuotation = () => {
         if (!selectedClient || !projectNumber || !projectName) {
